@@ -1,0 +1,138 @@
+import { Component, createElement } from "react";
+
+import { TextEditor } from "./TextEditor";
+
+interface WrapperProps {
+    class?: string;
+    mxObject?: mendix.lib.MxObject;
+    style?: string;
+    readOnly: boolean;
+}
+
+export interface TextEditorContainerProps extends WrapperProps {
+    stringAttribute: string;
+    editable: "default" | "never";
+    onChangeMicroflow: string;
+    dataType: "raw" | "html" | "markdown";
+}
+
+interface TextEditorState {
+    value: string;
+}
+
+export default class TextEditorContainer extends Component<TextEditorContainerProps, TextEditorState> {
+    private subscriptionHandles: number[];
+
+    constructor(props: TextEditorContainerProps) {
+        super(props);
+
+        this.state = {
+            value: this.getValue(this.props.stringAttribute, this.props.mxObject)
+        };
+        this.subscriptionHandles = [];
+        this.handleOnChange = this.handleOnChange.bind(this);
+        this.handleSubscriptions = this.handleSubscriptions.bind(this);
+    }
+
+    render() {
+        return createElement(TextEditor, {
+            className: this.props.class,
+            onChange: this.handleOnChange,
+            readOnly: this.isReadOnly(),
+            style: TextEditorContainer.parseStyle(this.props.style),
+            value: this.state.value,
+            valueType: this.props.dataType
+        } as any);
+    }
+
+    componentWillReceiveProps(newProps: TextEditorContainerProps) {
+        this.resetSubscriptions(newProps.mxObject);
+        this.setState({
+            value: this.getValue(this.props.stringAttribute, newProps.mxObject)
+        });
+    }
+
+    componentWillUnmount() {
+        this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
+    }
+
+    private getValue(attributeName: string, mxObject?: mendix.lib.MxObject): string {
+        if (mxObject) {
+            const value = mxObject.get(attributeName);
+            return value ? value.toString() : "";
+        }
+
+        return "";
+    }
+
+    private isReadOnly() {
+        const { stringAttribute, editable, mxObject, readOnly } = this.props;
+        if (editable === "default" && mxObject) {
+            return readOnly || mxObject.isReadonlyAttr(stringAttribute);
+        }
+
+        return true;
+    }
+
+    private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
+        this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
+
+        if (mxObject) {
+            this.subscriptionHandles.push(window.mx.data.subscribe({
+                callback: this.handleSubscriptions,
+                guid: mxObject.getGuid()
+            }));
+
+            this.subscriptionHandles.push(window.mx.data.subscribe({
+                attr: this.props.stringAttribute,
+                callback: this.handleSubscriptions,
+                guid: mxObject.getGuid()
+            }));
+        }
+    }
+
+    private handleSubscriptions() {
+        this.setState({
+            value: this.getValue(this.props.stringAttribute, this.props.mxObject)
+        });
+    }
+
+    private handleOnChange(data: string) {
+        const { mxObject, onChangeMicroflow } = this.props;
+        if (!mxObject || !mxObject.getGuid()) {
+            return;
+        }
+        mxObject.set(this.props.stringAttribute, data);
+
+        const context = new mendix.lib.MxContext();
+        context.setContext(mxObject.getEntity(), mxObject.getGuid());
+        if ( onChangeMicroflow && mxObject.getGuid()) {
+            window.mx.ui.action(onChangeMicroflow, {
+                error: error =>
+                    window.mx.ui.error(`Error while executing microflow: ${onChangeMicroflow}: ${error.message}`),
+                params: {
+                    applyto: "selection",
+                    guids: [ mxObject.getGuid() ]
+                }
+            });
+        }
+    }
+
+    public static parseStyle(style = ""): {[key: string]: string} {
+        try {
+            return style.split(";").reduce<{[key: string]: string}>((styleObject, line) => {
+                const pair = line.split(":");
+                if (pair.length === 2) {
+                    const name = pair[0].trim().replace(/(-.)/g, match => match[1].toUpperCase());
+                    styleObject[name] = pair[1].trim();
+                }
+                return styleObject;
+            }, {});
+        } catch (error) {
+            // tslint:disable-next-line no-console
+            console.log("Failed to parse style", style, error);
+        }
+
+        return {};
+    }
+}
