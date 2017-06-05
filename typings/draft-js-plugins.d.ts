@@ -1,6 +1,6 @@
 declare module "draft-js-plugins-editor" {
     const Editor: any;
-    function createEditorStateWithText(text: string): void;
+    function createEditorStateWithText(text: string): Draft.EditorState;
 
     export { Editor as default, createEditorStateWithText };
 }
@@ -21,12 +21,6 @@ declare module "draft-js-linkify-plugin" {
     function createLinkifyPlugin(): any;
 
     export { createLinkifyPlugin as default };
-}
-
-declare module "draft-js-import-html" {
-    function stateFromHTML(html: string): Draft.EditorState;
-
-    export { stateFromHTML };
 }
 
 declare module "draft-js-buttons" {

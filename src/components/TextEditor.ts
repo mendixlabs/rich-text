@@ -1,12 +1,11 @@
 import { Component, DOM, createElement } from "react";
+import * as classNames from "classnames";
 
-import Editor, { createEditorStateWithText } from "draft-js-plugins-editor";
+import Editor from "draft-js-plugins-editor";
 import createInlineToolbarPlugin, { Separator } from "draft-js-inline-toolbar-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { ContentState, Editor as DraftEditor, EditorState, convertFromHTML } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
-import { stateFromHTML } from "draft-js-import-html";
-
 import {
     BlockquoteButton,
     BoldButton,
@@ -25,19 +24,6 @@ import "draft-js-inline-toolbar-plugin/lib/plugin.css";
 import "draft-js-linkify-plugin/lib/plugin.css";
 import "../ui/TextEditor.css";
 
-export interface TextEditorProps {
-    className?: string;
-    style?: object;
-    value?: string;
-    onChange?: (data: string) => void;
-    readOnly?: boolean;
-    valueType: "text" | "raw" | "html" | "markdown";
-}
-
-interface TextEditorState {
-    editorState: any;
-}
-
 const linkifyPlugin = createLinkifyPlugin();
 const inlineToolbarPlugin = createInlineToolbarPlugin({
     structure: [
@@ -55,96 +41,45 @@ const inlineToolbarPlugin = createInlineToolbarPlugin({
         CodeBlockButton
     ]
 });
-const { InlineToolbar } = inlineToolbarPlugin;
 const pluginsList = [ inlineToolbarPlugin, linkifyPlugin ];
 
-export class TextEditor extends Component<TextEditorProps, TextEditorState> {
+interface TextEditorProps {
+    className?: string;
+    style?: object;
+    value: string;
+    onChange?: (data: string) => void;
+    readOnly?: boolean;
+}
+
+interface TextEditorState {
+    editorState: EditorState;
+}
+
+class TextEditor extends Component<TextEditorProps, TextEditorState> {
     public static defaultProps: Partial<TextEditorProps> = {
-        readOnly: false
+        readOnly: false,
+        value: ""
     };
-    private editor: any;
+    private editor: DraftEditor;
+
     constructor(props: TextEditorProps) {
         super(props);
-        if (props.valueType === "raw" && props.value) {
-            try {
-                this.state = {
-                    editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(props.value)))
-                };
-            } catch (e) {
-                this.state = {
-                    editorState: createEditorStateWithText("ERROR")
-                };
-            }
-        } else if (props.valueType === "html" && props.value) {
-            try {
-                this.state = {
-                    editorState: stateFromHTML(props.value)
-                };
-            } catch (e) {
-                this.state = {
-                    editorState: createEditorStateWithText("ERROR")
-                };
-            }
-        } else {
-            this.state = {
-                editorState: createEditorStateWithText("")
-            };
-        }
-        this.focus = this.focus.bind(this);
+
+        this.setEditorState(props.value);
+
         this.onChange = this.onChange.bind(this);
         this.refEditor = this.refEditor.bind(this);
         this.onBlur = this.onBlur.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps: TextEditorProps) {
-        if (nextProps.value !== this.props.value) {
-            if (nextProps.valueType === "raw" && nextProps.value) {
-                try {
-                    this.state = {
-                        editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(nextProps.value)))
-                    };
-                } catch (e) {
-                    this.state = {
-                        editorState: createEditorStateWithText("ERROR")
-                    };
-                }
-            } else {
-                this.state = {
-                    editorState: createEditorStateWithText("")
-                };
-            }
-        }
-    }
-
-    onChange(editorState: TextEditorState) {
-        this.setState({
-            editorState
-        });
-    }
-
-    focus() {
-        this.editor.focus();
-    }
-
-    onBlur() {
-        if (this.props.onChange) {
-            const content = this.state.editorState.getCurrentContent();
-            let data = "";
-            if (this.props.valueType === "raw") {
-                data = JSON.stringify(convertToRaw(content));
-            } else if (this.props.valueType === "html") {
-                data = stateToHTML(content);
-            }
-            this.props.onChange(data);
-        }
-    }
-
-    refEditor(element: any) {
-        this.editor = element;
+        this.onFocus = this.onFocus.bind(this);
     }
 
     render() {
-        return DOM.div({ className: "editor form-control mx-textarea-input mx-textarea", onClick: this.focus },
+        return DOM.div(
+            {
+                className: classNames("editor form-control mx-textarea-input mx-textarea", this.props.className),
+                onClick: this.onFocus,
+                style: this.props.style
+            },
             createElement(Editor, {
                 editorState: this.state.editorState,
                 onBlur: this.onBlur,
@@ -153,7 +88,42 @@ export class TextEditor extends Component<TextEditorProps, TextEditorState> {
                 readOnly: this.props.readOnly,
                 ref: this.refEditor
             }),
-            createElement(InlineToolbar)
+            createElement(inlineToolbarPlugin.InlineToolbar)
         );
     }
+
+    componentWillReceiveProps(nextProps: TextEditorProps) {
+        if (nextProps.value !== this.props.value) {
+            this.setEditorState(nextProps.value);
+        }
+    }
+
+    private setEditorState(value: string) {
+        const blocksFromHTML = convertFromHTML(value);
+        const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+        this.state = {
+            editorState: EditorState.createWithContent(contentState)
+        };
+    }
+
+    private onFocus() {
+        this.editor.focus();
+    }
+
+    private onChange(editorState: EditorState) {
+        this.setState({ editorState });
+    }
+
+    private onBlur() {
+        if (this.props.onChange) {
+            const content = this.state.editorState.getCurrentContent();
+            this.props.onChange(stateToHTML(content));
+        }
+    }
+
+    private refEditor(element: any) {
+        this.editor = element;
+    }
 }
+
+export { TextEditor, TextEditorProps, linkifyPlugin, inlineToolbarPlugin, pluginsList };

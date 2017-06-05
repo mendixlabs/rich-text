@@ -13,7 +13,6 @@ export interface TextEditorContainerProps extends WrapperProps {
     stringAttribute: string;
     editable: "default" | "never";
     onChangeMicroflow: string;
-    dataType: "raw" | "html" | "markdown";
 }
 
 interface TextEditorState {
@@ -21,15 +20,14 @@ interface TextEditorState {
 }
 
 export default class TextEditorContainer extends Component<TextEditorContainerProps, TextEditorState> {
-    private subscriptionHandles: number[];
+    private subscriptionHandles: number[] = [];
 
     constructor(props: TextEditorContainerProps) {
         super(props);
 
         this.state = {
-            value: this.getValue(this.props.stringAttribute, this.props.mxObject)
+            value: this.getValue(props.stringAttribute, props.mxObject)
         };
-        this.subscriptionHandles = [];
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
     }
@@ -40,15 +38,14 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
             style: TextEditorContainer.parseStyle(this.props.style),
-            value: this.state.value,
-            valueType: this.props.dataType
-        } as any);
+            value: this.state.value
+        });
     }
 
     componentWillReceiveProps(newProps: TextEditorContainerProps) {
         this.resetSubscriptions(newProps.mxObject);
         this.setState({
-            value: this.getValue(this.props.stringAttribute, newProps.mxObject)
+            value: this.getValue(newProps.stringAttribute, newProps.mxObject)
         });
     }
 
@@ -59,6 +56,7 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
     private getValue(attributeName: string, mxObject?: mendix.lib.MxObject): string {
         if (mxObject) {
             const value = mxObject.get(attributeName);
+
             return value ? value.toString() : "";
         }
 

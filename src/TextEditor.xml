@@ -2,12 +2,12 @@
 <widget id="com.mendix.widget.custom.texteditor.TextEditor" needsEntityContext="true" offlineCapable="true" xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../xsd/widget.xsd">
     <name>TextEditor</name>
     <description>Rich inline text editing</description>
-    <icon></icon>
+    <icon/>
     <properties>
         <property key="stringAttribute" type="attribute" required="false">
             <caption>Value attribute</caption>
             <category>General</category>
-            <description>The attribute that contains rich text</description>
+            <description>The attribute that contains the rich text</description>
             <attributeTypes>
                 <attributeType name="String" />
             </attributeTypes>
@@ -24,18 +24,8 @@
         <property key="onChangeMicroflow" type="microflow" required="false">
             <caption>On change microflow</caption>
             <category>Events</category>
-            <description>Microflow to trigger when button is toggled</description>
+            <description>Microflow to trigger when the editor is changed</description>
             <returnType type="Void"/>
-        </property>
-        <property key="dataType" type="enumeration" defaultValue="raw">
-            <caption>Data type</caption>
-            <category>Data source</category>
-            <description/>
-            <enumerationValues>
-                <enumerationValue key="raw">Raw</enumerationValue>
-                <enumerationValue key="html">HTML</enumerationValue>
-                <enumerationValue key="markdown">MarkDown</enumerationValue>
-            </enumerationValues>
         </property>
     </properties>
 </widget>

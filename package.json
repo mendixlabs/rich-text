@@ -79,7 +79,6 @@
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "draft-js-export-html": "^0.5.4",
-    "draft-js-import-html": "^0.3.2",
     "draft-js-inline-toolbar-plugin": "^2.0.0-rc2",
     "draft-js-linkify-plugin": "^2.0.0-beta1",
     "draft-js-plugins-editor": "^2.0.0-rc2"
