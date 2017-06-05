@@ -33,9 +33,6 @@
     "copy-webpack-plugin": "^4.0.1",
     "core-js": "^2.4.1",
     "css-loader": "^0.28.2",
-    "draft-js-buttons": "^2.0.0-beta6",
-    "draft-js-inline-toolbar-plugin": "^2.0.0-rc2",
-    "draft-js-plugins-editor": "^2.0.0-rc2",
     "enzyme": "^2.8.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "grunt": "1.0.1",
@@ -79,7 +76,7 @@
     "webpack-dev-server": "^2.2.0"
   },
   "dependencies": {
-    "@types/draft-js": "^0.10.1",
+    "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "draft-js-export-html": "^0.5.4",
     "draft-js-import-html": "^0.3.2",

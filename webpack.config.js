@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const widgetConfig = {
-    entry: "./src/components/TextEditorContainer.ts",
+    entry: [ "babel-polyfill", "./src/components/TextEditorContainer.ts" ],
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
         filename: "src/com/mendix/widget/custom/texteditor/TextEditor.js",

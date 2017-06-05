@@ -7,15 +7,6 @@ import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import { stateFromHTML } from "draft-js-import-html";
 
-// Need poly fills for IE11
-// import "core-js/es6/map";
-// import "core-js/es6/weak-map";
-// import "core-js/fn/object/assign";
-// import "core-js/fn/symbol";
-// import "core-js/fn/array/from";
-// import "core-js/fn/string/starts-with";
-// import "core-js/fn/string/ends-with";
-
 import {
     BlockquoteButton,
     BoldButton,
@@ -161,7 +152,7 @@ export class TextEditor extends Component<TextEditorProps, TextEditorState> {
                 plugins: pluginsList,
                 readOnly: this.props.readOnly,
                 ref: this.refEditor
-            } as any),
+            }),
             createElement(InlineToolbar)
         );
     }
