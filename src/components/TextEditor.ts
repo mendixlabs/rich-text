@@ -22,7 +22,7 @@ import {
 
 import "draft-js-inline-toolbar-plugin/lib/plugin.css";
 import "draft-js-linkify-plugin/lib/plugin.css";
-import "../ui/TextEditor.css";
+import "../ui/TextEditor.scss";
 
 const linkifyPlugin = createLinkifyPlugin();
 const inlineToolbarPlugin = createInlineToolbarPlugin({
@@ -74,18 +74,20 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
     }
 
     render() {
+        const { className, readOnly, style } = this.props;
+
         return DOM.div(
             {
-                className: classNames("editor form-control mx-textarea-input mx-textarea", this.props.className),
+                className: classNames("widget-text-editor form-control mx-textarea-input mx-textarea", className),
                 onClick: this.onFocus,
-                style: this.props.style
+                style
             },
             createElement(Editor, {
                 editorState: this.state.editorState,
                 onBlur: this.onBlur,
                 onChange: this.onChange,
                 plugins: pluginsList,
-                readOnly: this.props.readOnly,
+                readOnly,
                 ref: this.refEditor
             }),
             createElement(inlineToolbarPlugin.InlineToolbar)

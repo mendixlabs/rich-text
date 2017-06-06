@@ -17,7 +17,7 @@ describe("TextEditor", () => {
         expect(textEditor).toBeElement(
             DOM.div(
                 {
-                    className: "editor form-control mx-textarea-input mx-textarea",
+                    className: "widget-text-editor form-control mx-textarea-input mx-textarea",
                     onClick: jasmine.any(Function) as any
                 },
                 createElement(Editor, {
