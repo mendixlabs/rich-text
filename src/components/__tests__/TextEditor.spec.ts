@@ -1,12 +1,14 @@
 import { ShallowWrapper, shallow } from "enzyme";
 import { DOM, createElement } from "react";
 
-import { TextEditor, TextEditorProps, inlineToolbarPlugin, pluginsList } from "../TextEditor";
+import { TextEditor, TextEditorProps } from "../TextEditor";
 import Editor from "draft-js-plugins-editor";
+import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
 import { EditorState } from "draft-js";
 
 describe("TextEditor", () => {
     const renderTextEditor = (value: string) => shallow(createElement(TextEditor, { value }));
+    const inlineToolbarPlugin = createInlineToolbarPlugin();
     let textEditor: ShallowWrapper<TextEditorProps, any>;
 
     beforeEach(() => {
@@ -14,19 +16,21 @@ describe("TextEditor", () => {
     });
 
     it("renders the structure correctly", () => {
+        const mxClasses = "mx-textarea mx-textarea-input mx-textarea-input-noresize";
+
         expect(textEditor).toBeElement(
             DOM.div(
                 {
-                    className: "widget-text-editor form-control mx-textarea-input mx-textarea",
+                    className: `widget-text-editor form-control ${mxClasses}`,
                     onClick: jasmine.any(Function) as any
                 },
                 createElement(Editor, {
-                    editorState: jasmine.any(Object) as any,
-                    onBlur: jasmine.any(Function) as any,
-                    onChange: jasmine.any(Function) as any,
-                    plugins: pluginsList,
+                    editorState: jasmine.any(Object),
+                    onBlur: jasmine.any(Function),
+                    onChange: jasmine.any(Function),
+                    plugins: jasmine.any(Array),
                     readOnly: false,
-                    ref: jasmine.any(Function) as any
+                    ref: jasmine.any(Function)
                 }),
                 createElement(inlineToolbarPlugin.InlineToolbar)
             )

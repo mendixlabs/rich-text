@@ -24,25 +24,6 @@ import "draft-js-inline-toolbar-plugin/lib/plugin.css";
 import "draft-js-linkify-plugin/lib/plugin.css";
 import "../ui/TextEditor.scss";
 
-const linkifyPlugin = createLinkifyPlugin();
-const inlineToolbarPlugin = createInlineToolbarPlugin({
-    structure: [
-        BoldButton,
-        ItalicButton,
-        UnderlineButton,
-        CodeButton,
-        Separator,
-        HeadlineOneButton,
-        HeadlineTwoButton,
-        HeadlineThreeButton,
-        UnorderedListButton,
-        OrderedListButton,
-        BlockquoteButton,
-        CodeBlockButton
-    ]
-});
-const pluginsList = [ inlineToolbarPlugin, linkifyPlugin ];
-
 interface TextEditorProps {
     className?: string;
     style?: object;
@@ -61,6 +42,23 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
         value: ""
     };
     private editor: DraftEditor;
+    private linkifyPlugin = createLinkifyPlugin();
+    private inlineToolbarPlugin = createInlineToolbarPlugin({
+        structure: [
+            BoldButton,
+            ItalicButton,
+            UnderlineButton,
+            CodeButton,
+            Separator,
+            HeadlineOneButton,
+            HeadlineTwoButton,
+            HeadlineThreeButton,
+            UnorderedListButton,
+            OrderedListButton,
+            BlockquoteButton,
+            CodeBlockButton
+        ]
+    });
 
     constructor(props: TextEditorProps) {
         super(props);
@@ -75,10 +73,11 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
 
     render() {
         const { className, readOnly, style } = this.props;
+        const mxClasses = "mx-textarea mx-textarea-input mx-textarea-input-noresize";
 
         return DOM.div(
             {
-                className: classNames("widget-text-editor form-control mx-textarea-input mx-textarea", className),
+                className: classNames("widget-text-editor form-control", mxClasses, className),
                 onClick: this.onFocus,
                 style
             },
@@ -86,11 +85,11 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
                 editorState: this.state.editorState,
                 onBlur: this.onBlur,
                 onChange: this.onChange,
-                plugins: pluginsList,
+                plugins: [ this.inlineToolbarPlugin, this.linkifyPlugin ],
                 readOnly,
                 ref: this.refEditor
             }),
-            createElement(inlineToolbarPlugin.InlineToolbar)
+            createElement(this.inlineToolbarPlugin.InlineToolbar)
         );
     }
 
@@ -128,4 +127,4 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
     }
 }
 
-export { TextEditor, TextEditorProps, linkifyPlugin, inlineToolbarPlugin, pluginsList };
+export { TextEditor, TextEditorProps };
