@@ -4,6 +4,7 @@ import { TextEditor } from "./TextEditor";
 
 interface WrapperProps {
     class?: string;
+    mxform: mxui.lib.form._FormBase;
     mxObject?: mendix.lib.MxObject;
     style?: string;
     readOnly: boolean;
@@ -103,12 +104,13 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
         }
         mxObject.set(this.props.stringAttribute, data);
 
-        const context = new mendix.lib.MxContext();
+        const context = new window.mendix.lib.MxContext();
         context.setContext(mxObject.getEntity(), mxObject.getGuid());
         if ( onChangeMicroflow && mxObject.getGuid()) {
             window.mx.ui.action(onChangeMicroflow, {
                 error: error =>
                     window.mx.ui.error(`Error while executing microflow: ${onChangeMicroflow}: ${error.message}`),
+                origin: this.props.mxform,
                 params: {
                     applyto: "selection",
                     guids: [ mxObject.getGuid() ]
