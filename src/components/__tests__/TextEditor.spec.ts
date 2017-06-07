@@ -10,18 +10,17 @@ describe("TextEditor", () => {
     const renderTextEditor = (value: string) => shallow(createElement(TextEditor, { value }));
     const inlineToolbarPlugin = createInlineToolbarPlugin();
     let textEditor: ShallowWrapper<TextEditorProps, any>;
+    const editableClasses = "form-control mx-textarea-input mx-textarea-input-noresize";
 
     beforeEach(() => {
         textEditor = renderTextEditor("Text Editor");
     });
 
     it("renders the structure correctly", () => {
-        const mxClasses = "mx-textarea mx-textarea-input mx-textarea-input-noresize";
-
         expect(textEditor).toBeElement(
             DOM.div(
                 {
-                    className: `widget-text-editor form-control ${mxClasses}`,
+                    className: `widget-text-editor mx-textarea ${editableClasses}`,
                     onClick: jasmine.any(Function) as any
                 },
                 createElement(Editor, {
@@ -35,6 +34,16 @@ describe("TextEditor", () => {
                 createElement(inlineToolbarPlugin.InlineToolbar)
             )
         );
+    });
+
+    it("that is editable has the required css classes", () => {
+        expect(textEditor.hasClass(editableClasses)).toBe(true);
+    });
+
+    it("that is read only does not have the editability css classes", () => {
+        textEditor = shallow(createElement(TextEditor, { readOnly: true, value: "Value" }));
+
+        expect(textEditor.hasClass(editableClasses)).toBe(false);
     });
 
     it("updates the editor state only when the value is changed", () => {

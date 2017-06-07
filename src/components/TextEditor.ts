@@ -73,11 +73,13 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
 
     render() {
         const { className, readOnly, style } = this.props;
-        const mxClasses = "mx-textarea mx-textarea-input mx-textarea-input-noresize";
+        const editableClasses = "form-control mx-textarea-input mx-textarea-input-noresize";
 
         return DOM.div(
             {
-                className: classNames("widget-text-editor form-control", mxClasses, className),
+                className: classNames("widget-text-editor mx-textarea", className, {
+                    [`${editableClasses}`]: !readOnly
+                }),
                 onClick: this.onFocus,
                 style
             },

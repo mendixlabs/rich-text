@@ -74,6 +74,7 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
+        this.subscriptionHandles = [];
 
         if (mxObject) {
             this.subscriptionHandles.push(window.mx.data.subscribe({

@@ -15,7 +15,7 @@ export class preview extends Component<TextEditorContainerProps, {}> {
 
         return {
             className: props.class,
-            readOnly: true,
+            readOnly: false,
             style: TextEditorContainer.parseStyle(props.style),
             value: valueAttribute ? "[" + valueAttribute + "]" : props.stringAttribute
         };
