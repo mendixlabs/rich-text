@@ -41,7 +41,7 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
         readOnly: false,
         value: ""
     };
-    private editor: DraftEditor;
+    private editor?: DraftEditor;
     private linkifyPlugin = createLinkifyPlugin();
     private inlineToolbarPlugin = createInlineToolbarPlugin({
         structure: [
@@ -59,6 +59,7 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
             CodeBlockButton
         ]
     });
+    private hasFocus = false;
 
     constructor(props: TextEditorProps) {
         super(props);
@@ -110,18 +111,27 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
     }
 
     private onFocus() {
-        this.editor.focus();
+        if (this.editor) {
+            this.editor.focus();
+        }
+
+        this.hasFocus = true;
     }
 
     private onChange(editorState: EditorState) {
-        this.setState({ editorState });
+        if (!this.hasFocus && this.editor) {
+            this.editor.blur();
+        } else {
+            this.setState({ editorState });
+        }
     }
 
     private onBlur() {
-        if (this.props.onChange) {
+        if (this.props.onChange && this.hasFocus) {
             const content = this.state.editorState.getCurrentContent();
             this.props.onChange(stateToHTML(content));
         }
+        this.hasFocus = false;
     }
 
     private refEditor(element: any) {
