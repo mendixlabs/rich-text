@@ -23,5 +23,9 @@ export class preview extends Component<TextEditorContainerProps, {}> {
 }
 
 export function getPreviewCss() {
-    return require("./ui/TextEditor.scss");
+    return (
+        require("./ui/TextEditor.scss") +
+        require("draft-js-inline-toolbar-plugin/lib/plugin.css") +
+        require("draft-js-linkify-plugin/lib/plugin.css")
+    );
 }
