@@ -1,29 +1,23 @@
 "use strict";
 const webpack = require("webpack");
 const webpackConfig = require("./webpack.config");
-
-const webpackConfigRelease = [];
-
-webpackConfig.forEach(function(currentWebpackConfig) {
-    const webpackLoaderOptionsPlugin = currentWebpackConfig.plugins.slice(0);
-    const configRelease = {};
-
-    webpackLoaderOptionsPlugin.push(new webpack.optimize.UglifyJsPlugin());
-    Object.assign(configRelease, currentWebpackConfig, {
+const webpackConfigRelease = [ {}, {} ];
+webpackConfig.forEach(function (config, index) {
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    Object.assign(webpackConfigRelease[index], config, {
         devtool: false,
-        plugins: webpackLoaderOptionsPlugin
+        plugins: config.plugins
     });
-    webpackConfigRelease.push(configRelease);
 });
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     const pkg = grunt.file.readJSON("package.json");
     grunt.initConfig({
 
         watch: {
             updateWidgetFiles: {
                 files: [ "./dist/tmp/src/**/*" ],
-                tasks: [ "webpack:develop", "file_append", "compress:dist", "copy:distDeployment", "copy:mpk" ],
+                tasks: [ "webpack:develop", "compress:dist", "copy:distDeployment", "copy:mpk" ],
                 options: {
                     debounceDelay: 250,
                     livereload: true
@@ -81,8 +75,8 @@ module.exports = function(grunt) {
         file_append: {
             addSourceURL: {
                 files: [ {
-                    append: "\n\n//# sourceURL=TextEditor.webmodeler.js\n",
-                    input: "dist/tmp/src/TextEditor.webmodeler.js"
+                    append: `\n\n//# sourceURL=${pkg.widgetName}.webmodeler.js\n`,
+                    input: `dist/tmp/src/${pkg.widgetName}.webmodeler.js`
                 } ]
             }
         },
@@ -97,6 +91,7 @@ module.exports = function(grunt) {
                 "./dist/" + pkg.version + "/" + pkg.widgetName + "/*",
                 "./dist/tmp/**/*",
                 "./dist/tsc/**/*",
+                "./dist/testresults/**/*",
                 "./dist/MxTestProject/deployment/web/widgets/" + pkg.widgetName + "/*",
                 "./dist/MxTestProject/widgets/" + pkg.widgetName + ".mpk"
             ]
@@ -124,7 +119,7 @@ module.exports = function(grunt) {
     grunt.registerTask(
         "release",
         "Compiles all the assets and copies the files to the dist directory. Minified without source mapping",
-        [ "checkDependencies", "clean:build", "webpack:release",  "file_append", "compress:dist", "copy:mpk" ]
+        [ "checkDependencies", "clean:build", "webpack:release", "file_append", "compress:dist", "copy:mpk" ]
     );
     grunt.registerTask("build", [ "clean build" ]);
 };

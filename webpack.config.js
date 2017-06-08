@@ -1,17 +1,20 @@
-const path = require("path");
 const webpack = require("webpack");
+const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const pkg = require("./package");
+const widgetName = pkg.widgetName;
+const name = pkg.widgetName.toLowerCase();
 
 const widgetConfig = {
-    entry: [ "babel-polyfill", "./src/components/TextEditorContainer.ts" ],
+    entry: `./src/components/${widgetName}Container.ts`,
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
-        filename: "src/com/mendix/widget/custom/texteditor/TextEditor.js",
+        filename: `src/com/mendix/widget/custom/${name}/${widgetName}.js`,
         libraryTarget: "umd"
     },
     resolve: {
-        extensions: [ ".ts", ".js" ],
+        extensions: [ ".ts", ".js", ".json" ],
         alias: {
             "tests": path.resolve(__dirname, "./tests")
         }
@@ -32,17 +35,25 @@ const widgetConfig = {
     devtool: "source-map",
     externals: [ "react", "react-dom" ],
     plugins: [
-        new CopyWebpackPlugin([ { from: "src/**/*.xml" } ], { copyUnmodified: true }),
-        new ExtractTextPlugin({ filename: "./src/com/mendix/widget/custom/texteditor/ui/TextEditor.css" }),
-        new webpack.LoaderOptionsPlugin({ debug: true })
+        new CopyWebpackPlugin([
+            { from: "src/**/*.js" },
+            { from: "src/**/*.xml" },
+            { from: "src/**/*.png", to: `src/com/mendix/widget/custom/${name}/` }
+        ], {
+            copyUnmodified: true
+        }),
+        new ExtractTextPlugin({ filename: `./src/com/mendix/widget/custom/${name}/ui/${widgetName}.css` }),
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        })
     ]
 };
 
 const previewConfig = {
-    entry: "./src/TextEditor.webmodeler.ts",
+    entry: `./src/${widgetName}.webmodeler.ts`,
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
-        filename: "src/TextEditor.webmodeler.js",
+        filename: `src/${widgetName}.webmodeler.js`,
         libraryTarget: "commonjs"
     },
     resolve: {
@@ -57,10 +68,9 @@ const previewConfig = {
             }},
             { test: /\.css$/, use: "raw-loader" },
             { test: /\.scss$/, use: [
-                    { loader: "raw-loader" },
-                    { loader: "sass-loader" }
-                ]
-            }
+                { loader: "raw-loader" },
+                { loader: "sass-loader" }
+            ] }
         ]
     },
     devtool: "inline-source-map",
