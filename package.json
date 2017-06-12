@@ -1,5 +1,5 @@
 {
-  "name": "text-editor",
+  "name": "rich-text",
   "widgetName": "RichText",
   "version": "0.1.0",
   "description": "Rich inline text editing",

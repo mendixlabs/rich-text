@@ -7,10 +7,7 @@ import createLinkifyPlugin from "draft-js-linkify-plugin";
 import { ContentState, Editor as DraftEditor, EditorState, convertFromHTML } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import {
-    BlockquoteButton,
     BoldButton,
-    CodeBlockButton,
-    CodeButton,
     HeadlineOneButton,
     HeadlineThreeButton,
     HeadlineTwoButton,
@@ -29,7 +26,7 @@ interface RichTextProps {
     style?: object;
     value: string;
     onChange?: (data: string) => void;
-    readOnly?: boolean;
+    readOnly: boolean;
 }
 
 interface TextEditorState {
@@ -48,15 +45,12 @@ class RichText extends Component<RichTextProps, TextEditorState> {
             BoldButton,
             ItalicButton,
             UnderlineButton,
-            CodeButton,
             Separator,
             HeadlineOneButton,
             HeadlineTwoButton,
             HeadlineThreeButton,
             UnorderedListButton,
-            OrderedListButton,
-            BlockquoteButton,
-            CodeBlockButton
+            OrderedListButton
         ]
     });
     private hasFocus = false;
@@ -92,7 +86,7 @@ class RichText extends Component<RichTextProps, TextEditorState> {
                 readOnly,
                 ref: this.refEditor
             }),
-            createElement(this.inlineToolbarPlugin.InlineToolbar)
+            !this.props.readOnly ? createElement(this.inlineToolbarPlugin.InlineToolbar) : null
         );
     }
 

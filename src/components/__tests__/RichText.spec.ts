@@ -7,7 +7,7 @@ import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
 import { EditorState } from "draft-js";
 
 describe("RichText", () => {
-    const renderTextEditor = (value: string) => shallow(createElement(RichText, { value }));
+    const renderTextEditor = (value: string) => shallow(createElement(RichText, { value, readOnly: false }));
     const inlineToolbarPlugin = createInlineToolbarPlugin();
     let textEditor: ShallowWrapper<RichTextProps, any>;
     const editableClasses = "form-control mx-textarea-input mx-textarea-input-noresize";
@@ -73,7 +73,7 @@ describe("RichText", () => {
 
     it("triggers the specified on change action when the editor loses focus", () => {
         const onChangeSpy = jasmine.createSpy("onChange");
-        textEditor = shallow(createElement(RichText, { onChange: onChangeSpy, value: "Value" }));
+        textEditor = shallow(createElement(RichText, { onChange: onChangeSpy, value: "Value", readOnly: false }));
         const draftEditor = textEditor.find(Editor);
 
         draftEditor.simulate("blur");
