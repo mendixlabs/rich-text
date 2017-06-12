@@ -1,6 +1,6 @@
 import { Component, createElement } from "react";
 
-import { TextEditor } from "./TextEditor";
+import { RichText } from "./RichText";
 
 interface WrapperProps {
     class?: string;
@@ -10,20 +10,20 @@ interface WrapperProps {
     readOnly: boolean;
 }
 
-export interface TextEditorContainerProps extends WrapperProps {
+interface RichTextContainerProps extends WrapperProps {
     stringAttribute: string;
     editable: "default" | "never";
     onChangeMicroflow: string;
 }
 
-interface TextEditorState {
+interface RichTextState {
     value: string;
 }
 
-export default class TextEditorContainer extends Component<TextEditorContainerProps, TextEditorState> {
+class RichTextContainer extends Component<RichTextContainerProps, RichTextState> {
     private subscriptionHandles: number[] = [];
 
-    constructor(props: TextEditorContainerProps) {
+    constructor(props: RichTextContainerProps) {
         super(props);
 
         this.state = {
@@ -34,16 +34,16 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
     }
 
     render() {
-        return createElement(TextEditor, {
+        return createElement(RichText, {
             className: this.props.class,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
-            style: TextEditorContainer.parseStyle(this.props.style),
+            style: RichTextContainer.parseStyle(this.props.style),
             value: this.state.value
         });
     }
 
-    componentWillReceiveProps(newProps: TextEditorContainerProps) {
+    componentWillReceiveProps(newProps: RichTextContainerProps) {
         this.resetSubscriptions(newProps.mxObject);
         this.setState({
             value: this.getValue(newProps.stringAttribute, newProps.mxObject)
@@ -137,3 +137,5 @@ export default class TextEditorContainer extends Component<TextEditorContainerPr
         return {};
     }
 }
+
+export { RichTextContainer as default, RichTextContainerProps };

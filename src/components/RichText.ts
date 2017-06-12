@@ -22,9 +22,9 @@ import {
 
 import "draft-js-inline-toolbar-plugin/lib/plugin.css";
 import "draft-js-linkify-plugin/lib/plugin.css";
-import "../ui/TextEditor.scss";
+import "../ui/RichText.scss";
 
-interface TextEditorProps {
+interface RichTextProps {
     className?: string;
     style?: object;
     value: string;
@@ -36,8 +36,8 @@ interface TextEditorState {
     editorState: EditorState;
 }
 
-class TextEditor extends Component<TextEditorProps, TextEditorState> {
-    public static defaultProps: Partial<TextEditorProps> = {
+class RichText extends Component<RichTextProps, TextEditorState> {
+    public static defaultProps: Partial<RichTextProps> = {
         readOnly: false,
         value: ""
     };
@@ -61,7 +61,7 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
     });
     private hasFocus = false;
 
-    constructor(props: TextEditorProps) {
+    constructor(props: RichTextProps) {
         super(props);
 
         this.setEditorState(props.value);
@@ -78,7 +78,7 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
 
         return DOM.div(
             {
-                className: classNames("widget-text-editor mx-textarea", className, {
+                className: classNames("widget-rich-text mx-textarea", className, {
                     [`${editableClasses}`]: !readOnly
                 }),
                 onClick: this.onFocus,
@@ -96,7 +96,7 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
         );
     }
 
-    componentWillReceiveProps(nextProps: TextEditorProps) {
+    componentWillReceiveProps(nextProps: RichTextProps) {
         if (nextProps.value !== this.props.value) {
             this.setEditorState(nextProps.value);
         }
@@ -139,4 +139,4 @@ class TextEditor extends Component<TextEditorProps, TextEditorState> {
     }
 }
 
-export { TextEditor, TextEditorProps };
+export { RichText, RichTextProps };

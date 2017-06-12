@@ -1,15 +1,15 @@
 import { ShallowWrapper, shallow } from "enzyme";
 import { DOM, createElement } from "react";
 
-import { TextEditor, TextEditorProps } from "../TextEditor";
+import { RichText, RichTextProps } from "../RichText";
 import Editor from "draft-js-plugins-editor";
 import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
 import { EditorState } from "draft-js";
 
-describe("TextEditor", () => {
-    const renderTextEditor = (value: string) => shallow(createElement(TextEditor, { value }));
+describe("RichText", () => {
+    const renderTextEditor = (value: string) => shallow(createElement(RichText, { value }));
     const inlineToolbarPlugin = createInlineToolbarPlugin();
-    let textEditor: ShallowWrapper<TextEditorProps, any>;
+    let textEditor: ShallowWrapper<RichTextProps, any>;
     const editableClasses = "form-control mx-textarea-input mx-textarea-input-noresize";
 
     beforeEach(() => {
@@ -20,7 +20,7 @@ describe("TextEditor", () => {
         expect(textEditor).toBeElement(
             DOM.div(
                 {
-                    className: `widget-text-editor mx-textarea ${editableClasses}`,
+                    className: `widget-rich-text mx-textarea ${editableClasses}`,
                     onClick: jasmine.any(Function) as any
                 },
                 createElement(Editor, {
@@ -41,7 +41,7 @@ describe("TextEditor", () => {
     });
 
     it("that is read only does not have the editability css classes", () => {
-        textEditor = shallow(createElement(TextEditor, { readOnly: true, value: "Value" }));
+        textEditor = shallow(createElement(RichText, { readOnly: true, value: "Value" }));
 
         expect(textEditor.hasClass(editableClasses)).toBe(false);
     });
@@ -73,7 +73,7 @@ describe("TextEditor", () => {
 
     it("triggers the specified on change action when the editor loses focus", () => {
         const onChangeSpy = jasmine.createSpy("onChange");
-        textEditor = shallow(createElement(TextEditor, { onChange: onChangeSpy, value: "Value" }));
+        textEditor = shallow(createElement(RichText, { onChange: onChangeSpy, value: "Value" }));
         const draftEditor = textEditor.find(Editor);
 
         draftEditor.simulate("blur");

@@ -1,6 +1,6 @@
 {
   "name": "text-editor",
-  "widgetName": "TextEditor",
+  "widgetName": "RichText",
   "version": "0.1.0",
   "description": "Rich inline text editing",
   "scripts": {
