@@ -113,11 +113,7 @@ class RichText extends Component<RichTextProps, TextEditorState> {
     }
 
     private onChange(editorState: EditorState) {
-        if (!this.hasFocus && this.editor) {
-            this.editor.blur();
-        } else {
-            this.setState({ editorState });
-        }
+        this.setState({ editorState });
     }
 
     private onBlur() {
