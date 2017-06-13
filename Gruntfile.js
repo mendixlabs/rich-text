@@ -3,10 +3,11 @@ const webpack = require("webpack");
 const webpackConfig = require("./webpack.config");
 const webpackConfigRelease = [ {}, {} ];
 webpackConfig.forEach(function (config, index) {
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    const pluginsCopy = config.plugins.slice();
+    pluginsCopy.push(new webpack.optimize.UglifyJsPlugin());
     Object.assign(webpackConfigRelease[index], config, {
         devtool: false,
-        plugins: config.plugins
+        plugins: pluginsCopy
     });
 });
 
