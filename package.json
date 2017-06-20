@@ -81,6 +81,7 @@
     "draft-js-export-html": "^0.5.4",
     "draft-js-inline-toolbar-plugin": "^2.0.0-rc2",
     "draft-js-linkify-plugin": "^2.0.0-beta1",
-    "draft-js-plugins-editor": "^2.0.0-rc2"
+    "draft-js-plugins-editor": "^2.0.0-rc2",
+    "react-quill": "^1.0.0-rc.2"
   }
 }

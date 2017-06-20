@@ -1,6 +1,7 @@
 import { Component, createElement } from "react";
 
-import { RichText } from "./RichText";
+// import { RichText } from "./RichText";
+import { QuillJS } from "./QuillJS";
 
 interface WrapperProps {
     class?: string;
@@ -8,6 +9,7 @@ interface WrapperProps {
     mxObject?: mendix.lib.MxObject;
     style?: string;
     readOnly: boolean;
+    visibility: "snow" | "bubble";
 }
 
 interface RichTextContainerProps extends WrapperProps {
@@ -34,11 +36,17 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
     }
 
     render() {
-        return createElement(RichText, {
-            className: this.props.class,
+        // return createElement(RichText, {
+        //     className: this.props.class,
+        //     onChange: this.handleOnChange,
+        //     readOnly: this.isReadOnly(),
+        //     style: RichTextContainer.parseStyle(this.props.style),
+        //     value: this.state.value
+        // });
+
+        return createElement(QuillJS, {
             onChange: this.handleOnChange,
-            readOnly: this.isReadOnly(),
-            style: RichTextContainer.parseStyle(this.props.style),
+            theme: this.props.visibility,
             value: this.state.value
         });
     }
@@ -64,14 +72,14 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
         return "";
     }
 
-    private isReadOnly() {
-        const { stringAttribute, editable, mxObject, readOnly } = this.props;
-        if (editable === "default" && mxObject) {
-            return readOnly || mxObject.isReadonlyAttr(stringAttribute);
-        }
-
-        return true;
-    }
+    // private isReadOnly() {
+    //     const { stringAttribute, editable, mxObject, readOnly } = this.props;
+    //     if (editable === "default" && mxObject) {
+    //         return readOnly || mxObject.isReadonlyAttr(stringAttribute);
+    //     }
+    //
+    //     return true;
+    // }
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
