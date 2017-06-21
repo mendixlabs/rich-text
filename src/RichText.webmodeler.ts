@@ -15,6 +15,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
             className: props.class,
             readOnly: true,
             style: TextEditorContainer.parseStyle(props.style),
+            theme: props.visibility,
             value: valueAttribute ? "[" + valueAttribute + "]" : props.stringAttribute
         };
     }
@@ -23,7 +24,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
 export function getPreviewCss() {
     return (
         require("./ui/RichText.scss") +
-        require("draft-js-inline-toolbar-plugin/lib/plugin.css") +
-        require("draft-js-linkify-plugin/lib/plugin.css")
+        require("react-quill/dist/quill.snow.css") +
+        require("react-quill/dist/quill.bubble.css")
     );
 }

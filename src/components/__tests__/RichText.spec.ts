@@ -7,7 +7,11 @@ import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
 import { EditorState } from "draft-js";
 
 describe("RichText", () => {
-    const renderTextEditor = (value: string) => shallow(createElement(RichText, { value, readOnly: false }));
+    const renderTextEditor = (value: string) => shallow(createElement(RichText, {
+        readOnly: false,
+        theme: "snow",
+        value
+    }));
     const inlineToolbarPlugin = createInlineToolbarPlugin();
     let textEditor: ShallowWrapper<RichTextProps, any>;
     const editableClasses = "form-control mx-textarea-input mx-textarea-input-noresize";
@@ -41,7 +45,7 @@ describe("RichText", () => {
     });
 
     it("that is read only does not have the editability css classes", () => {
-        textEditor = shallow(createElement(RichText, { readOnly: true, value: "Value" }));
+        textEditor = shallow(createElement(RichText, { readOnly: true, value: "Value", theme: "snow" }));
 
         expect(textEditor.hasClass(editableClasses)).toBe(false);
     });
@@ -73,7 +77,12 @@ describe("RichText", () => {
 
     it("triggers the specified on change action when the editor loses focus", () => {
         const onChangeSpy = jasmine.createSpy("onChange");
-        textEditor = shallow(createElement(RichText, { onChange: onChangeSpy, value: "Value", readOnly: false }));
+        textEditor = shallow(createElement(RichText, {
+            onChange: onChangeSpy,
+            readOnly: false,
+            theme: "snow",
+            value: "Value"
+        }));
         const draftEditor = textEditor.find(Editor);
 
         draftEditor.simulate("blur");
