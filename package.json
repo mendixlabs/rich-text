@@ -27,6 +27,7 @@
     "@types/enzyme": "^2.8.0",
     "@types/jasmine": "^2.5.51",
     "@types/karma": "^0.13.35",
+    "@types/quill": "0.0.30",
     "@types/react": "^15.0.27",
     "@types/react-dom": "^15.5.0",
     "check-dependencies": "^1.0.1",
@@ -77,12 +78,7 @@
     "webpack-dev-server": "^2.2.0"
   },
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
-    "draft-js-export-html": "^0.5.4",
-    "draft-js-inline-toolbar-plugin": "^2.0.0-rc2",
-    "draft-js-linkify-plugin": "^2.0.0-beta1",
-    "draft-js-plugins-editor": "^2.0.0-rc2",
-    "react-quill": "^1.0.0-rc.2"
+    "quill": "^1.2.6"
   }
 }

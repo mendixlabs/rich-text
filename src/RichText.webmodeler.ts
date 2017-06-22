@@ -24,7 +24,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
 export function getPreviewCss() {
     return (
         require("./ui/RichText.scss") +
-        require("react-quill/dist/quill.snow.css") +
-        require("react-quill/dist/quill.bubble.css")
+        require("quill/dist/quill.snow.css") +
+        require("quill/dist/quill.bubble.css")
     );
 }

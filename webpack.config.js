@@ -46,8 +46,7 @@ const widgetConfig = {
         new ExtractTextPlugin({ filename: `./src/com/mendix/widget/custom/${name}/ui/${widgetName}.css` }),
         new webpack.LoaderOptionsPlugin({
             debug: true
-        }),
-        new BundleAnalyzerPlugin()
+        })
     ]
 };
 

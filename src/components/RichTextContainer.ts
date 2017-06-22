@@ -8,13 +8,13 @@ interface WrapperProps {
     mxObject?: mendix.lib.MxObject;
     style?: string;
     readOnly: boolean;
-    visibility: "snow" | "bubble";
 }
 
 interface RichTextContainerProps extends WrapperProps {
     stringAttribute: string;
     editable: "default" | "never";
     onChangeMicroflow: string;
+    visibility: "snow" | "bubble";
 }
 
 interface RichTextState {

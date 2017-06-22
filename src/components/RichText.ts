@@ -1,10 +1,10 @@
-import { Component, DOM, createElement } from "react";
+import { Component, DOM } from "react";
 import * as classNames from "classnames";
 
-import * as QuillEditor from "react-quill";
+import * as Quill from "quill";
 
-import "react-quill/dist/quill.snow.css";
-import "react-quill/dist/quill.bubble.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
 
 interface RichTextProps {
     className?: string;
@@ -15,39 +15,54 @@ interface RichTextProps {
     theme: "bubble" | "snow";
 }
 
-interface RichTextState {
-    text: string;
-}
+class RichText extends Component<RichTextProps, {}> {
+    private quillNode?: HTMLElement;
+    private quill?: Quill.Quill;
 
-class RichText extends Component<RichTextProps, RichTextState> {
     constructor(props: RichTextProps) {
         super(props);
 
         this.state = { text: props.value };
         this.handleChange = this.handleChange.bind(this);
+        this.setQuillNode = this.setQuillNode.bind(this);
     }
 
     render() {
         return DOM.div({ className: classNames("widget-rich-text", this.props.className), style: this.props.style },
-            createElement(QuillEditor, {
-                onChange: this.handleChange,
-                readOnly: this.props.readOnly,
-                theme: this.props.theme,
-                value: this.state.text
-            })
+            DOM.div({ className: "widget-rich-text-quill", ref: this.setQuillNode })
         );
+    }
+
+    componentDidMount() {
+        this.renderEditor(this.props.value);
     }
 
     componentWillReceiveProps(nextProps: RichTextProps) {
         if (nextProps.value !== this.props.value) {
-            this.setState({ text: nextProps.value });
+            this.renderEditor(nextProps.value);
         }
     }
 
-    handleChange(text: string) {
-        this.setState({ text });
-        if (this.props.onChange) {
-            this.props.onChange(text);
+    private setQuillNode(node: HTMLElement) {
+        this.quillNode = node;
+    }
+
+    private renderEditor(text: string) {
+        if (this.quillNode && !this.quill) {
+            this.quill = new Quill(this.quillNode, {
+                theme: this.props.theme
+            });
+            this.quill.on("text-change", this.handleChange);
+        }
+        if (this.quill) {
+            this.quill.clipboard.dangerouslyPasteHTML(text);
+        }
+    }
+
+    private handleChange() {
+        // this.setState({ text });
+        if (this.props.onChange && this.quill) {
+            this.props.onChange((this.quill as any).container.firstChild.innerHTML);
         }
     }
 }
