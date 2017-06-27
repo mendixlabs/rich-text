@@ -13,6 +13,7 @@ interface WrapperProps {
 interface RichTextContainerProps extends WrapperProps {
     stringAttribute: string;
     editable: "default" | "never";
+    editorMode: EditorMode;
     onChangeMicroflow: string;
     visibility: "snow" | "bubble";
 }
@@ -20,6 +21,8 @@ interface RichTextContainerProps extends WrapperProps {
 interface RichTextState {
     value: string;
 }
+
+export type EditorMode = "basic" | "advanced" | "custom";
 
 class RichTextContainer extends Component<RichTextContainerProps, RichTextState> {
     private subscriptionHandles: number[] = [];
@@ -37,6 +40,7 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
     render() {
         return createElement(RichText, {
             className: this.props.class,
+            editorMode: this.props.editorMode,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
             style: RichTextContainer.parseStyle(this.props.style),

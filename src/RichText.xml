@@ -25,6 +25,17 @@
                 <enumerationValue key="bubble">On select</enumerationValue>
             </enumerationValues>
         </property>
+        <property key="editorMode" type="enumeration" defaultValue="basic">
+            <caption>Editor mode</caption>
+            <category>General</category>
+            <description>
+            </description>
+            <enumerationValues>
+                <enumerationValue key="basic">Basic</enumerationValue>
+                <enumerationValue key="advanced">Advanced</enumerationValue>
+                <enumerationValue key="custom">Custom</enumerationValue>
+            </enumerationValues>
+        </property>
         <property key="editable" type="enumeration" defaultValue="default">
             <caption>Editable</caption>
             <category>Data source</category>
