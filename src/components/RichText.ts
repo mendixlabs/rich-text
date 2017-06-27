@@ -52,7 +52,7 @@ class RichText extends Component<RichTextProps, {}> {
     private renderEditor(text: string) {
         if (this.quillNode && !this.quill) {
             this.quill = new Quill(this.quillNode, {
-                modules: RichText.getBasicOptions(),
+                modules: this.getEditorModules(),
                 theme: this.props.theme
             });
             this.quill.on("text-change", this.handleChange);
@@ -68,11 +68,40 @@ class RichText extends Component<RichTextProps, {}> {
         }
     }
 
+    private getEditorModules(): Quill.StringMap {
+        if (this.props.editorMode === "basic") {
+            return RichText.getBasicOptions();
+        }
+
+        return RichText.getAdvancedOptions();
+    }
+
     private static getBasicOptions(): Quill.StringMap {
         return {
             toolbar: [
                 [ "bold", "italic", "underline" ],
                 [ { list: "ordered" }, { list: "bullet" } ]
+            ]
+        };
+    }
+
+    private static getAdvancedOptions(): Quill.StringMap {
+        return {
+            toolbar: [
+                [ { header: [ 1, 2, 3, 4, 5, 6, false ] } ],
+
+                [ "bold", "italic", "underline", "strike" ],
+                [ "blockquote", "code-block" ],
+
+                [ { list: "ordered" }, { list: "bullet" } ],
+                [ { script: "sub" }, { script: "super" } ],
+                [ { indent: "-1" }, { indent: "+1" } ],
+                [ { direction: "rtl" } ],
+
+                [ { color: [] }, { background: [] } ],
+                [ { align: [] } ],
+
+                [ "clean" ]
             ]
         };
     }
