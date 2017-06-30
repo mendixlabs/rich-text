@@ -1,6 +1,6 @@
 import { Component, createElement } from "react";
 
-import { RichText } from "./RichText";
+import { QuillOptions, RichText } from "./RichText";
 
 interface WrapperProps {
     class?: string;
@@ -16,6 +16,7 @@ interface RichTextContainerProps extends WrapperProps {
     editorMode: EditorMode;
     onChangeMicroflow: string;
     visibility: "snow" | "bubble";
+    customOptions?: Array<{ option: QuillOptions }>;
 }
 
 interface RichTextState {
@@ -38,8 +39,11 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
     }
 
     render() {
+        // tslint:disable-next-line
+        console.log(this.props.customOptions);
         return createElement(RichText, {
             className: this.props.class,
+            customOptions: this.props.customOptions,
             editorMode: this.props.editorMode,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),

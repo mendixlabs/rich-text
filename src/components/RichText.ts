@@ -15,11 +15,33 @@ interface RichTextProps {
     style?: object;
     value: string;
     theme: "bubble" | "snow";
+    customOptions?: Array<{ option: QuillOptions }>;
 }
+
+export type QuillOptions = "spacer" | "bold" | "italic" | "underline" | "strike" | "orderedList" | "bulletList"
+    | "blockQuote" | "codeBlock" | "subScript" | "superScript" | "indent" | "outdent" | "direction" | "textColor"
+    | "backgroundColor" | "align";
 
 class RichText extends Component<RichTextProps, {}> {
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
+    private static quillOptions: { [key: string]: any } = {
+        align: { align: [] },
+        bold: "bold",
+        bulletList: { list: "bullet" },
+        direction: { direction: "rtl" },
+        fillColor: { background: [] },
+        headers: { header: [ 1, 2, 3, 4, 5, 6, false ] },
+        indent: { indent: "-1" },
+        italic: "italic",
+        orderedList: { list: "ordered" },
+        outdent: { indent: "+1" },
+        strike: "strike",
+        subScript: { script: "sub" },
+        superScript: { script: "super" },
+        textColor: { color: [] },
+        underline: "underline"
+    };
 
     constructor(props: RichTextProps) {
         super(props);
@@ -73,7 +95,11 @@ class RichText extends Component<RichTextProps, {}> {
             return RichText.getBasicOptions();
         }
 
-        return RichText.getAdvancedOptions();
+        if (this.props.editorMode === "advanced") {
+            return RichText.getAdvancedOptions();
+        }
+
+        return RichText.getCustomOptions(this.props.customOptions ? this.props.customOptions : null);
     }
 
     private static getBasicOptions(): Quill.StringMap {
@@ -88,7 +114,7 @@ class RichText extends Component<RichTextProps, {}> {
     private static getAdvancedOptions(): Quill.StringMap {
         return {
             toolbar: [
-                [ { header: [ 1, 2, 3, 4, 5, 6, false ] } ],
+                [ RichText.quillOptions.headings ],
 
                 [ "bold", "italic", "underline", "strike" ],
                 [ "blockquote", "code-block" ],
@@ -104,6 +130,34 @@ class RichText extends Component<RichTextProps, {}> {
                 [ "clean" ]
             ]
         };
+    }
+
+    private static getCustomOptions(options: Array<{ option: QuillOptions }> | null) {
+        const toolbar: { toolbar?: any[] } = {};
+        if (options && options.length) {
+            toolbar.toolbar = [ ...this.processCustomOptions(options) ];
+        }
+
+        return toolbar;
+    }
+
+    private static processCustomOptions(options: Array<{ option: QuillOptions }>): any[] {
+        const validOptions: any[] = [];
+        let grouping: any[] = [];
+        options.forEach(option => {
+            if (option.option === "spacer") {
+                validOptions.push(grouping);
+                grouping = [];
+            } else {
+                grouping.push(RichText.quillOptions[ option.option ]);
+            }
+        });
+
+        if (grouping.length) {
+            validOptions.push(grouping);
+        }
+
+        return validOptions;
     }
 }
 

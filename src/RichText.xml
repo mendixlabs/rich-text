@@ -6,17 +6,9 @@
     <description>Rich inline text editing</description>
     <icon/>
     <properties>
-        <property key="stringAttribute" type="attribute" required="false">
-            <caption>Value attribute</caption>
-            <category>General</category>
-            <description>The attribute that contains the rich text</description>
-            <attributeTypes>
-                <attributeType name="String" />
-            </attributeTypes>
-        </property>
         <property key="visibility" type="enumeration" defaultValue="snow">
             <caption>Visibility</caption>
-            <category>General</category>
+            <category>Display</category>
             <description>Whether the text editor should be always visible or only popup when text is selected for
                 editing
             </description>
@@ -27,7 +19,7 @@
         </property>
         <property key="editorMode" type="enumeration" defaultValue="basic">
             <caption>Editor mode</caption>
-            <category>General</category>
+            <category>Display</category>
             <description>
             </description>
             <enumerationValues>
@@ -38,12 +30,51 @@
         </property>
         <property key="editable" type="enumeration" defaultValue="default">
             <caption>Editable</caption>
-            <category>Data source</category>
+            <category>Display</category>
             <description/>
             <enumerationValues>
                 <enumerationValue key="default">Default</enumerationValue>
                 <enumerationValue key="never">Never</enumerationValue>
             </enumerationValues>
+        </property>
+        <property key="stringAttribute" type="attribute" required="false">
+            <caption>Value attribute</caption>
+            <category>Data source</category>
+            <description>The attribute that contains the rich text</description>
+            <attributeTypes>
+                <attributeType name="String"/>
+            </attributeTypes>
+        </property>
+        <property key="customOptions" type="object" isList="true" required="false">
+            <caption>Options</caption>
+            <category>Custom</category>
+            <description>Group the editor options you wish to appear</description>
+            <properties>
+                <property key="option" type="enumeration" defaultValue="bold">
+                    <caption>Options</caption>
+                    <category>Options</category>
+                    <description/>
+                    <enumerationValues>
+                        <enumerationValue key="spacer">Spacer</enumerationValue>
+                        <enumerationValue key="bold">Bold</enumerationValue>
+                        <enumerationValue key="italic">Italic</enumerationValue>
+                        <enumerationValue key="underline">Underline</enumerationValue>
+                        <enumerationValue key="headings">Headings</enumerationValue>
+                        <enumerationValue key="orderedList">Ordered list</enumerationValue>
+                        <enumerationValue key="bulletList">Bullet list</enumerationValue>
+                        <enumerationValue key="blockQuote">Block quote</enumerationValue>
+                        <enumerationValue key="codeBlock">Code block</enumerationValue>
+                        <enumerationValue key="subScript">Subscript</enumerationValue>
+                        <enumerationValue key="superScript">Superscript</enumerationValue>
+                        <enumerationValue key="indent">Indent</enumerationValue>
+                        <enumerationValue key="outdent">Outdent</enumerationValue>
+                        <enumerationValue key="direction">Direction</enumerationValue>
+                        <enumerationValue key="textColor">Text color</enumerationValue>
+                        <enumerationValue key="fillColor">Fill color</enumerationValue>
+                        <enumerationValue key="align">Align</enumerationValue>
+                    </enumerationValues>
+                </property>
+            </properties>
         </property>
         <property key="onChangeMicroflow" type="microflow" required="false">
             <caption>On change microflow</caption>
