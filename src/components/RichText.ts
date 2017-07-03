@@ -6,12 +6,14 @@ import { EditorMode } from "./RichTextContainer";
 
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
+import "../ui/RichText.scss";
 
 interface RichTextProps {
     className?: string;
     editorMode: EditorMode;
     onChange?: (value: string) => void;
     readOnly: boolean;
+    hasContext: boolean;
     style?: object;
     value: string;
     theme: "bubble" | "snow";
@@ -27,8 +29,10 @@ class RichText extends Component<RichTextProps, {}> {
     private quill?: Quill.Quill;
     private static quillOptions: { [key: string]: any } = {
         align: { align: [] },
+        blockQuote: "blockquote",
         bold: "bold",
         bulletList: { list: "bullet" },
+        codeBlock: "code-block",
         direction: { direction: "rtl" },
         fillColor: { background: [] },
         headers: { header: [ 1, 2, 3, 4, 5, 6, false ] },
@@ -52,35 +56,39 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     render() {
-        return DOM.div({ className: classNames("widget-rich-text", this.props.className), style: this.props.style },
+        return DOM.div({
+                className: classNames("widget-rich-text", this.props.className, {
+                    "no-context": !this.props.hasContext
+                }),
+                style: this.props.style
+            },
             DOM.div({ className: "widget-rich-text-quill", ref: this.setQuillNode })
         );
     }
 
     componentDidMount() {
-        this.renderEditor(this.props.value);
+        this.renderEditor(this.props);
     }
 
     componentWillReceiveProps(nextProps: RichTextProps) {
-        if (nextProps.value !== this.props.value) {
-            this.renderEditor(nextProps.value);
-        }
+        this.renderEditor(nextProps);
     }
 
     private setQuillNode(node: HTMLElement) {
         this.quillNode = node;
     }
 
-    private renderEditor(text: string) {
+    private renderEditor(props: RichTextProps) {
         if (this.quillNode && !this.quill) {
             this.quill = new Quill(this.quillNode, {
                 modules: this.getEditorModules(),
-                theme: this.props.theme
+                theme: props.theme
             });
             this.quill.on("text-change", this.handleChange);
         }
         if (this.quill) {
-            this.quill.clipboard.dangerouslyPasteHTML(text);
+            this.quill.enable(!props.readOnly);
+            this.quill.clipboard.dangerouslyPasteHTML(props.value);
         }
     }
 
@@ -94,7 +102,6 @@ class RichText extends Component<RichTextProps, {}> {
         if (this.props.editorMode === "basic") {
             return RichText.getBasicOptions();
         }
-
         if (this.props.editorMode === "advanced") {
             return RichText.getAdvancedOptions();
         }
@@ -149,7 +156,7 @@ class RichText extends Component<RichTextProps, {}> {
                 validOptions.push(grouping);
                 grouping = [];
             } else {
-                grouping.push(RichText.quillOptions[ option.option ]);
+                grouping.push(RichText.quillOptions[option.option]);
             }
         });
 

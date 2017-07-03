@@ -9,8 +9,7 @@
         <property key="visibility" type="enumeration" defaultValue="snow">
             <caption>Visibility</caption>
             <category>Display</category>
-            <description>Whether the text editor should be always visible or only popup when text is selected for
-                editing
+            <description>Whether the text editor should be always visible or only popup when text is selected for editing
             </description>
             <enumerationValues>
                 <enumerationValue key="snow">Always</enumerationValue>

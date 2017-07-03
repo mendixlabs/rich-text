@@ -1,5 +1,22 @@
 .widget-rich-text {
-    :global(.public-DraftEditor-content) {
-        min-height: 140px;
+    .widget-rich-text-quill {
+        .ql-editor {
+            max-height: 500px;
+            min-height: 100px;
+        }
+    }
+
+    &.no-context {
+        .ql-toolbar {
+            display: none;
+        }
+
+        .widget-rich-text-quill {
+            &.ql-container {
+                &.ql-snow {
+                    border-top: 1px solid #ccc;
+                }
+            }
+        }
     }
 }

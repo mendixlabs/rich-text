@@ -39,12 +39,11 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
     }
 
     render() {
-        // tslint:disable-next-line
-        console.log(this.props.customOptions);
         return createElement(RichText, {
             className: this.props.class,
             customOptions: this.props.customOptions,
             editorMode: this.props.editorMode,
+            hasContext: !!this.props.mxObject,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
             style: RichTextContainer.parseStyle(this.props.style),
