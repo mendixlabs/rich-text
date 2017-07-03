@@ -6,16 +6,37 @@
         }
     }
 
-    &.no-context {
+    @mixin hide-toolbar() {
         .ql-toolbar {
             display: none;
         }
+    }
 
-        .widget-rich-text-quill {
-            &.ql-container {
-                &.ql-snow {
-                    border-top: 1px solid #ccc;
-                }
+    &.no-context {
+        @include hide-toolbar();
+
+        .ql-container {
+            &.ql-snow {
+                border-top: 1px solid #ccc;
+            }
+
+            &.ql-bubble {
+                border: 1px solid #ccc;
+            }
+        }
+    }
+
+    &.read-only {
+        @include hide-toolbar();
+
+        .ql-container {
+            &.ql-snow {
+                border: none;
+            }
+
+            .ql-editor {
+                padding: 0;
+                min-height: 100%;
             }
         }
     }

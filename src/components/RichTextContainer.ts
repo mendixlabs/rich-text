@@ -1,6 +1,6 @@
 import { Component, createElement } from "react";
 
-import { QuillOptions, RichText } from "./RichText";
+import { RichText } from "./RichText";
 
 interface WrapperProps {
     class?: string;
@@ -16,7 +16,8 @@ interface RichTextContainerProps extends WrapperProps {
     editorMode: EditorMode;
     onChangeMicroflow: string;
     visibility: "snow" | "bubble";
-    customOptions?: Array<{ option: QuillOptions }>;
+    customOptions?: Array<{ option: string }>;
+    readOnlyStyle: "control" | "text";
 }
 
 interface RichTextState {
@@ -46,6 +47,7 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
             hasContext: !!this.props.mxObject,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
+            readOnlyStyle: this.props.readOnlyStyle,
             style: RichTextContainer.parseStyle(this.props.style),
             theme: this.props.visibility,
             value: this.state.value

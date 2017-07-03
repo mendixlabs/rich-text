@@ -16,6 +16,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
             editorMode: props.editorMode,
             hasContext: true,
             readOnly: true,
+            readOnlyStyle: props.readOnlyStyle,
             style: TextEditorContainer.parseStyle(props.style),
             theme: props.visibility,
             value: valueAttribute ? "[" + valueAttribute + "]" : props.stringAttribute

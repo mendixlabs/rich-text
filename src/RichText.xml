@@ -9,7 +9,8 @@
         <property key="visibility" type="enumeration" defaultValue="snow">
             <caption>Visibility</caption>
             <category>Display</category>
-            <description>Whether the text editor should be always visible or only popup when text is selected for editing
+            <description>Whether the text editor should be always visible or only popup when text is selected for
+                editing
             </description>
             <enumerationValues>
                 <enumerationValue key="snow">Always</enumerationValue>
@@ -34,6 +35,15 @@
             <enumerationValues>
                 <enumerationValue key="default">Default</enumerationValue>
                 <enumerationValue key="never">Never</enumerationValue>
+            </enumerationValues>
+        </property>
+        <property key="readOnlyStyle" type="enumeration" defaultValue="control">
+            <caption>Read-only style</caption>
+            <category>Display</category>
+            <description>Whether a non-responsive editor is shown or just the formatted text</description>
+            <enumerationValues>
+                <enumerationValue key="control">Control</enumerationValue>
+                <enumerationValue key="text">Text</enumerationValue>
             </enumerationValues>
         </property>
         <property key="stringAttribute" type="attribute" required="false">

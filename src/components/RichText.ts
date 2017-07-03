@@ -13,16 +13,13 @@ interface RichTextProps {
     editorMode: EditorMode;
     onChange?: (value: string) => void;
     readOnly: boolean;
+    readOnlyStyle: string;
     hasContext: boolean;
     style?: object;
     value: string;
     theme: "bubble" | "snow";
-    customOptions?: Array<{ option: QuillOptions }>;
+    customOptions?: Array<{ option: string }>;
 }
-
-export type QuillOptions = "spacer" | "bold" | "italic" | "underline" | "strike" | "orderedList" | "bulletList"
-    | "blockQuote" | "codeBlock" | "subScript" | "superScript" | "indent" | "outdent" | "direction" | "textColor"
-    | "backgroundColor" | "align";
 
 class RichText extends Component<RichTextProps, {}> {
     private quillNode?: HTMLElement;
@@ -58,7 +55,8 @@ class RichText extends Component<RichTextProps, {}> {
     render() {
         return DOM.div({
                 className: classNames("widget-rich-text", this.props.className, {
-                    "no-context": !this.props.hasContext
+                    "no-context": !this.props.hasContext,
+                    "read-only": this.props.readOnly && this.props.readOnlyStyle === "text"
                 }),
                 style: this.props.style
             },
@@ -139,7 +137,7 @@ class RichText extends Component<RichTextProps, {}> {
         };
     }
 
-    private static getCustomOptions(options: Array<{ option: QuillOptions }> | null) {
+    private static getCustomOptions(options: Array<{ option: string }> | null) {
         const toolbar: { toolbar?: any[] } = {};
         if (options && options.length) {
             toolbar.toolbar = [ ...this.processCustomOptions(options) ];
@@ -148,7 +146,7 @@ class RichText extends Component<RichTextProps, {}> {
         return toolbar;
     }
 
-    private static processCustomOptions(options: Array<{ option: QuillOptions }>): any[] {
+    private static processCustomOptions(options: Array<{ option: string }>): any[] {
         const validOptions: any[] = [];
         let grouping: any[] = [];
         options.forEach(option => {
