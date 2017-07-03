@@ -48,7 +48,7 @@ class RichText extends Component<RichTextProps, {}> {
         super(props);
 
         this.state = { text: props.value };
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSelectionChange = this.handleSelectionChange.bind(this);
         this.setQuillNode = this.setQuillNode.bind(this);
     }
 
@@ -69,7 +69,11 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     componentWillReceiveProps(nextProps: RichTextProps) {
-        this.renderEditor(nextProps);
+        this.updateEditor(nextProps);
+    }
+
+    componentWillUnmount() {
+        this.handleSelectionChange();
     }
 
     private setQuillNode(node: HTMLElement) {
@@ -82,17 +86,22 @@ class RichText extends Component<RichTextProps, {}> {
                 modules: this.getEditorModules(),
                 theme: props.theme
             });
-            this.quill.on("text-change", this.handleChange);
-        }
-        if (this.quill) {
-            this.quill.enable(!props.readOnly);
-            this.quill.clipboard.dangerouslyPasteHTML(props.value);
+
+            this.quill.on("selection-change", this.handleSelectionChange);
+
         }
     }
 
-    private handleChange() {
-        if (this.props.onChange && this.quill) {
+    private handleSelectionChange() {
+        if (this.quill && !this.quill.hasFocus() && this.props.onChange) {
             this.props.onChange((this.quill as any).container.firstChild.innerHTML);
+        }
+    }
+
+    private updateEditor(props: RichTextProps) {
+        if (this.quill) {
+            this.quill.enable(!props.readOnly);
+            this.quill.clipboard.dangerouslyPasteHTML(props.value);
         }
     }
 
