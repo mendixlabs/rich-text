@@ -13,18 +13,21 @@ interface WrapperProps {
 interface RichTextContainerProps extends WrapperProps {
     stringAttribute: string;
     editable: "default" | "never";
-    editorMode: EditorMode;
+    editorOption: EditorOption;
     onChangeMicroflow: string;
-    visibility: "snow" | "bubble";
+    theme: "snow" | "bubble";
     customOptions?: Array<{ option: string }>;
-    readOnlyStyle: "control" | "text";
+    readOnlyStyle: ReadOnlyStyle;
+    minNumberOfLines: number;
+    maxNumberOfLines: number;
 }
 
 interface RichTextState {
     value: string;
 }
 
-export type EditorMode = "basic" | "advanced" | "custom";
+export type EditorOption = "basic" | "extended" | "custom";
+export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 class RichTextContainer extends Component<RichTextContainerProps, RichTextState> {
     private subscriptionHandles: number[] = [];
@@ -43,13 +46,15 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
         return createElement(RichText, {
             className: this.props.class,
             customOptions: this.props.customOptions,
-            editorMode: this.props.editorMode,
+            editorOption: this.props.editorOption,
             hasContext: !!this.props.mxObject,
+            maxNumberOfLines: this.props.maxNumberOfLines,
+            minNumberOfLines: this.props.minNumberOfLines,
             onChange: this.handleOnChange,
             readOnly: this.isReadOnly(),
             readOnlyStyle: this.props.readOnlyStyle,
             style: RichTextContainer.parseStyle(this.props.style),
-            theme: this.props.visibility,
+            theme: this.props.theme,
             value: this.state.value
         });
     }
@@ -115,8 +120,6 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
         }
         mxObject.set(this.props.stringAttribute, data);
 
-        const context = new window.mendix.lib.MxContext();
-        context.setContext(mxObject.getEntity(), mxObject.getGuid());
         if ( onChangeMicroflow && mxObject.getGuid()) {
             window.mx.ui.action(onChangeMicroflow, {
                 error: error =>

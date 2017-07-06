@@ -1,17 +1,24 @@
 # Text Editor
-Rich inline text editing
+Rich inline or toolbar text editing
 
 ## Features
 * Edit selected text
+* HTML output of formatted text
+* Show editor options either on a toolbar or as a bubble
+
+### Keyboard shortcuts
+* Ctrl + B: Bold
+* Ctrl + I: Italic
+* Ctrl + U: Underline
 
 ## Dependencies
-Mendix 7.1
+Mendix 7.4
 
 ## Demo project
 http://texteditorwidget.mxapps.io
 
 ## Usage
-Place the widget in the context of an object that has a string attribute.
+Place the widget in a data view, list view or template grid with a data source that has a string attribute.
 
 ## Issues, suggestions and feature requests
 We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/text-editor/issues

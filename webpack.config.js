@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 const pkg = require("./package");
 const widgetName = pkg.widgetName;
 const name = pkg.widgetName.toLowerCase();

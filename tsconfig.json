@@ -15,11 +15,8 @@
     "watch": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
+    "alwaysStrict": true,
     "skipLibCheck": false,
-    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },

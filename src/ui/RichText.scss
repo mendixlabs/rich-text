@@ -1,8 +1,63 @@
 .widget-rich-text {
+    @mixin separator {
+        padding-left: 8px;
+        padding-right: 8px;
+        border-right: 1px solid rgba(204, 204, 204, 0.5);
+        margin-left: 0;
+        margin-right: 0;
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+
+    .ql-toolbar {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        &.ql-snow {
+            border-color: #DDD;
+            border-bottom: 0;
+
+            .ql-formats {
+                @include separator;
+            }
+        }
+    }
+
+    .ql-bubble {
+        .ql-toolbar {
+            .ql-formats {
+                @include separator;
+            }
+        }
+    }
+
+    @mixin text-area-border-radius($radius) {
+        .ql-editor {
+            border-top-left-radius: $radius;
+            border-top-right-radius: $radius;
+        }
+    }
+
     .widget-rich-text-quill {
+        &.ql-container {
+            &.ql-snow {
+                border: none;
+
+                @include text-area-border-radius(0);
+            }
+        }
+
         .ql-editor {
             max-height: 500px;
             min-height: 100px;
+        }
+
+        &.ql-disabled {
+            .ql-editor {
+                cursor: default;
+            }
         }
     }
 
@@ -15,18 +70,21 @@
     &.no-context {
         @include hide-toolbar();
 
-        .ql-container {
+        .widget-rich-text-quill {
             &.ql-snow {
-                border-top: 1px solid #ccc;
+                @include text-area-border-radius(4px);
             }
 
-            &.ql-bubble {
-                border: 1px solid #ccc;
+            &.ql-container {
+                .ql-editor {
+                    min-height: 100px;
+                    background-color: #eee;
+                }
             }
         }
     }
 
-    &.read-only {
+    &.read-only-text {
         @include hide-toolbar();
 
         .ql-container {
@@ -37,6 +95,55 @@
             .ql-editor {
                 padding: 0;
                 min-height: 100%;
+            }
+        }
+    }
+
+    &.read-only-bordered {
+        @include hide-toolbar();
+
+        .widget-rich-text-quill {
+            &.ql-container {
+                &.ql-snow {
+                    @include text-area-border-radius(4px);
+                }
+            }
+
+            .ql-editor {
+                background-color: #eee;
+            }
+        }
+    }
+
+    &.read-only-bordered-toolbar {
+        .widget-rich-text-quill {
+            background-color: #eee;
+
+            .ql-editor {
+                background-color: #eee;
+            }
+        }
+
+        .ql-toolbar {
+            &.ql-snow {
+                background-color: #eee;
+
+                button {
+                    cursor: default;
+
+                    @mixin default-stroke {
+                        .ql-stroke {
+                            stroke: #444;
+                        }
+                    }
+                    &.ql-active {
+                        @include default-stroke;
+                    }
+
+                    &:hover {
+                        @include default-stroke
+                    }
+                }
             }
         }
     }

@@ -1,15 +1,12 @@
 "use strict";
 const webpack = require("webpack");
 const webpackConfig = require("./webpack.config");
-const webpackConfigRelease = [ {}, {} ];
-webpackConfig.forEach(function (config, index) {
-    const pluginsCopy = config.plugins.slice();
-    pluginsCopy.push(new webpack.optimize.UglifyJsPlugin());
-    Object.assign(webpackConfigRelease[index], config, {
-        devtool: false,
-        plugins: pluginsCopy
-    });
-});
+const merge = require("webpack-merge");
+
+const webpackConfigRelease = webpackConfig.map(config => merge(config, {
+    devtool: false,
+    plugins: [ new webpack.optimize.UglifyJsPlugin() ]
+}));
 
 module.exports = function (grunt) {
     const pkg = grunt.file.readJSON("package.json");

@@ -13,12 +13,14 @@ export class preview extends Component<RichTextContainerProps, {}> {
 
         return {
             className: props.class,
-            editorMode: props.editorMode,
+            editorOption: props.editorOption,
             hasContext: true,
-            readOnly: true,
+            maxNumberOfLines: props.maxNumberOfLines,
+            minNumberOfLines: props.minNumberOfLines,
+            readOnly: props.editable === "never",
             readOnlyStyle: props.readOnlyStyle,
             style: TextEditorContainer.parseStyle(props.style),
-            theme: props.visibility,
+            theme: props.theme,
             value: valueAttribute ? "[" + valueAttribute + "]" : props.stringAttribute
         };
     }
@@ -26,8 +28,8 @@ export class preview extends Component<RichTextContainerProps, {}> {
 
 export function getPreviewCss() {
     return (
-        require("./ui/RichText.scss") +
         require("quill/dist/quill.snow.css") +
-        require("quill/dist/quill.bubble.css")
+        require("quill/dist/quill.bubble.css") +
+        require("./ui/RichText.scss")
     );
 }
