@@ -21,7 +21,7 @@ describe("RichText", () => {
     it("renders the structure correctly", () => {
         textEditor = renderTextEditor(defaultProps);
         expect(textEditor).toBeElement(
-            DOM.div({ className: "widget-rich-text" },
+            DOM.div({ className: "widget-rich-text read-only-bordered" },
                 DOM.div({ className: "widget-rich-text-quill" })
             )
         );
@@ -30,18 +30,25 @@ describe("RichText", () => {
     describe("that is read-only", () => {
         defaultProps.readOnly = true;
 
-        it("with style text has the read-only class", () => {
+        it("with read-only style text has the read-only-text class", () => {
             defaultProps.readOnlyStyle = "text";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("read-only")).toBe(true);
+            expect(textEditor.hasClass("read-only-text")).toBe(true);
         });
 
-        it("with style control does not have the read-only class", () => {
+        it("with read-only style bordered has the read-only-bordered class", () => {
             defaultProps.readOnlyStyle = "bordered";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("read-only")).toBe(false);
+            expect(textEditor.hasClass("read-only-bordered")).toBe(true);
+        });
+
+        it("with read-only style borderedToolbar has the read-only-bordered-toolbar class", () => {
+            defaultProps.readOnlyStyle = "borderedToolbar";
+            textEditor = renderTextEditor(defaultProps);
+
+            expect(textEditor.hasClass("read-only-bordered-toolbar")).toBe(true);
         });
     });
 
@@ -64,6 +71,21 @@ describe("RichText", () => {
         expect(editorSpy).toHaveBeenCalled();
     });
 
+    it("updates when the editor value changes", () => {
+        textEditor = renderTextEditor(defaultProps);
+        const textEditorInstance = textEditor.instance() as any;
+        const quillNode = textEditorInstance.quillNode = document.createElement("div");
+        document.createElement("div").appendChild(quillNode);
+
+        const editorSpy = spyOn(textEditorInstance, "updateEditor").and.callThrough();
+        textEditorInstance.componentWillReceiveProps(defaultProps);
+        textEditorInstance.componentDidMount();
+        defaultProps.value = "New value";
+        textEditorInstance.componentWillReceiveProps(defaultProps);
+
+        expect(editorSpy).toHaveBeenCalledTimes(2);
+    });
+
     describe("with editor mode set to", () => {
         const getToolBar: any = (props: RichTextProps) => {
             textEditor = renderTextEditor(props);
@@ -75,20 +97,20 @@ describe("RichText", () => {
             return textEditorInstance.quill.getModule("toolbar");
         };
 
-        it("with editor mode set to basic renders a basic text editor", () => {
+        it("basic renders a basic text editor", () => {
             const toolbar = getToolBar(defaultProps);
 
             expect(toolbar.options.container.length).toBe(2);
         });
 
-        it("with editor mode set to advanced renders an advanced text editor", () => {
+        it("extended renders an advanced text editor", () => {
             defaultProps.editorOption = "extended";
             const toolbar = getToolBar(defaultProps);
 
-            expect(toolbar.options.container.length).toBe(10);
+            expect(toolbar.options.container.length).toBe(7);
         });
 
-        it("with editor mode set to custom renders a custom toolbar", () => {
+        it("custom renders a custom toolbar", () => {
             defaultProps.editorOption = "custom";
             defaultProps.customOptions = [ { option: "bold" }, { option: "spacer" }, { option: "underline" } ];
             const toolbar = getToolBar(defaultProps);

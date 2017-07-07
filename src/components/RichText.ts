@@ -114,16 +114,7 @@ class RichText extends Component<RichTextProps, {}> {
         if (this.quill) {
             this.quill.enable(!props.readOnly && props.hasContext);
             if (props.value !== this.props.value) {
-                const selection = this.quill.getSelection();
                 this.quill.clipboard.dangerouslyPasteHTML(props.value);
-
-                // TODO: Check if selection is ever not null
-                if (selection) {
-                    const length = this.quill.getLength();
-                    selection.index = Math.max(0, Math.min(selection.index, length - 1));
-                    selection.length = Math.max(0, Math.min(selection.length, (length - 1) - selection.index));
-                }
-                this.quill.setSelection(selection);
             }
 
             this.setEditorStyle(props);
