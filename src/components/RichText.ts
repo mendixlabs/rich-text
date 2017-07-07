@@ -126,11 +126,11 @@ class RichText extends Component<RichTextProps, {}> {
                 this.quill.setSelection(selection);
             }
 
-            this.styleEditor(props);
+            this.setEditorStyle(props);
         }
     }
 
-    private styleEditor(props: RichTextProps) {
+    private setEditorStyle(props: RichTextProps) {
         const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
         if (quillEditor) {
             if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {

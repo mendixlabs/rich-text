@@ -1,6 +1,7 @@
 import { Component, createElement } from "react";
 
 import { RichText } from "./RichText";
+import { Alert } from "./Alert";
 
 interface WrapperProps {
     class?: string;
@@ -24,6 +25,7 @@ interface RichTextContainerProps extends WrapperProps {
 
 interface RichTextState {
     value: string;
+    alertMessage?: string;
 }
 
 export type EditorOption = "basic" | "extended" | "custom";
@@ -36,6 +38,7 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
         super(props);
 
         this.state = {
+            alertMessage: RichTextContainer.validateProps(props),
             value: this.getValue(props.stringAttribute, props.mxObject)
         };
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -43,6 +46,10 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
     }
 
     render() {
+        if (this.state.alertMessage) {
+            return createElement(Alert, { message: this.state.alertMessage });
+        }
+
         return createElement(RichText, {
             className: this.props.class,
             customOptions: this.props.customOptions,
@@ -131,6 +138,14 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
                 }
             });
         }
+    }
+
+    public static validateProps(props: RichTextContainerProps): string {
+        if (props.minNumberOfLines !== 0 && props.minNumberOfLines > props.maxNumberOfLines) {
+            return `The minimum number of lines should not be greater than the maximum`;
+        }
+
+        return "";
     }
 
     public static parseStyle(style = ""): {[key: string]: string} {

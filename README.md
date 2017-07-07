@@ -10,6 +10,8 @@ Rich inline or toolbar text editing
 * Ctrl + B: Bold
 * Ctrl + I: Italic
 * Ctrl + U: Underline
+* Ctrl + Z: Undo
+* Ctrl + Y: Redo
 
 ## Dependencies
 Mendix 7.4
