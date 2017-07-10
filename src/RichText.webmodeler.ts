@@ -2,10 +2,18 @@ import { Component, createElement } from "react";
 import { RichText, RichTextProps } from "./components/RichText";
 import TextEditorContainer, { RichTextContainerProps } from "./components/RichTextContainer";
 
+type VisibilityMap = {
+    [P in keyof RichTextContainerProps]: boolean;
+};
+
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
     render() {
         return createElement(RichText, preview.transformProps(this.props));
+    }
+
+    componentDidMount() {
+        this.forceUpdate();
     }
 
     private static transformProps(props: RichTextContainerProps): RichTextProps {
@@ -21,7 +29,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
             readOnlyStyle: props.readOnlyStyle,
             style: TextEditorContainer.parseStyle(props.style),
             theme: props.theme,
-            value: valueAttribute ? "[" + valueAttribute + "]" : props.stringAttribute
+            value: valueAttribute ? `[${valueAttribute}]` : props.stringAttribute
         };
     }
 }
@@ -32,4 +40,10 @@ export function getPreviewCss() {
         require("quill/dist/quill.bubble.css") +
         require("./ui/RichText.scss")
     );
+}
+
+export function getVisibleProperties(props: RichTextContainerProps, visibilityMap: VisibilityMap) {
+    if (props.editorOption !== "custom") {
+        visibilityMap.customOptions = false;
+    }
 }
