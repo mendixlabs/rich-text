@@ -3,10 +3,6 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { RichText, RichTextProps } from "./components/RichText";
 import TextEditorContainer, { RichTextContainerProps } from "./components/RichTextContainer";
 
-// type VisibilityMap = {
-//     [P in keyof RichTextContainerProps]: boolean;
-// };
-
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
     private richTextNode: HTMLDivElement;
@@ -44,6 +40,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
 
         return {
             className: props.class,
+            customOptions: props.customOptions,
             editorOption: props.editorOption,
             hasContext: true,
             maxNumberOfLines: props.maxNumberOfLines,
@@ -52,7 +49,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
             readOnlyStyle: props.readOnlyStyle,
             style: TextEditorContainer.parseStyle(props.style),
             theme: props.theme,
-            value: valueAttribute ? `[${valueAttribute}]` : props.stringAttribute
+            value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`
         };
     }
 }
@@ -64,9 +61,3 @@ export function getPreviewCss() {
         require("./ui/RichText.scss")
     );
 }
-
-// export function getVisibleProperties(props: RichTextContainerProps, visibilityMap: VisibilityMap) {
-//     if (props.editorOption !== "custom") {
-//         visibilityMap.customOptions = false;
-//     }
-// }

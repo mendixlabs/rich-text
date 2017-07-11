@@ -114,9 +114,7 @@ class RichText extends Component<RichTextProps, {}> {
     private updateEditor(props: RichTextProps) {
         if (this.quill) {
             this.quill.enable(!props.readOnly && props.hasContext);
-            if (props.value !== this.props.value) {
-                this.quill.clipboard.dangerouslyPasteHTML(props.value);
-            }
+            this.quill.clipboard.dangerouslyPasteHTML(props.value);
 
             this.setEditorStyle(props);
         }
@@ -126,7 +124,7 @@ class RichText extends Component<RichTextProps, {}> {
         const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
         if (quillEditor) {
             if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {
-                quillEditor.className = quillEditor.className + " form-control";
+                quillEditor.classList.add("form-control");
             }
 
             const averageLineHeight = 1.42857;
