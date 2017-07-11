@@ -1,7 +1,7 @@
 {
   "name": "rich-text",
   "widgetName": "RichText",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Rich inline or toolbar text editing",
   "scripts": {
     "pretest": "tsc",
@@ -17,11 +17,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mendixlabs/RichText"
+    "url": "https://github.com/mendixlabs/rich-text"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/mendixlabs/RichText/issues"
+    "url": "https://github.com/mendixlabs/rich-text/issues"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.0",

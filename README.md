@@ -23,7 +23,7 @@ http://texteditorwidget.mxapps.io
 Place the widget in a data view, list view or template grid with a data source that has a string attribute.
 
 ## Issues, suggestions and feature requests
-We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/text-editor/issues
+We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/rich-text/issues
 
 ## Development
 Prerequisite: Install git, node package manager, webpack CLI, grunt CLI, Karma CLI
@@ -42,7 +42,7 @@ Create a folder named `dist` in the project root.
 
 Create a Mendix test project in the dist folder and rename its root folder to `dist/MxTestProject`. Changes to the widget code shall be automatically pushed to this test project.
 
-[https://github.com/MendixLabs/text-editor/releases/download/v0.1.0/TextEditorWidget.mpk](https://github.com/MendixLabs/text-editor/releases/download/v0.1.0/TextEditorWidget.mpk)
+[https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk](https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/RichText.mpk)
 
 To automatically compile, bundle and push code changes to the running test project, run:
 
