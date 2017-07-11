@@ -84,6 +84,7 @@ class RichText extends Component<RichTextProps, {}> {
 
     componentWillUnmount() {
         this.handleSelectionChange();
+        this.quill.off("selection-change", this.handleSelectionChange);
     }
 
     private setQuillNode(node: HTMLElement) {

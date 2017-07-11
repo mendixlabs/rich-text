@@ -1,19 +1,42 @@
-import { Component, createElement } from "react";
+import { Component, DOM, createElement } from "react";
+import { render, unmountComponentAtNode } from "react-dom";
 import { RichText, RichTextProps } from "./components/RichText";
 import TextEditorContainer, { RichTextContainerProps } from "./components/RichTextContainer";
 
-type VisibilityMap = {
-    [P in keyof RichTextContainerProps]: boolean;
-};
+// type VisibilityMap = {
+//     [P in keyof RichTextContainerProps]: boolean;
+// };
 
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
+    private richTextNode: HTMLDivElement;
+
+    constructor(props: RichTextContainerProps) {
+        super(props);
+
+        this.getRichTextNode = this.getRichTextNode.bind(this);
+    }
+
     render() {
-        return createElement(RichText, preview.transformProps(this.props));
+        return DOM.div({ ref: this.getRichTextNode });
     }
 
     componentDidMount() {
+        render(createElement(RichText, preview.transformProps(this.props)), this.richTextNode);
         this.forceUpdate();
+    }
+
+    componentWillReceiveProps(newProps: RichTextContainerProps) {
+        unmountComponentAtNode(this.richTextNode);
+        render(createElement(RichText, preview.transformProps(newProps)), this.richTextNode);
+    }
+
+    componentDidUpdate() {
+        render(createElement(RichText, preview.transformProps(this.props)), this.richTextNode);
+    }
+
+    private getRichTextNode(node: HTMLDivElement) {
+        this.richTextNode = node;
     }
 
     private static transformProps(props: RichTextContainerProps): RichTextProps {
@@ -42,8 +65,8 @@ export function getPreviewCss() {
     );
 }
 
-export function getVisibleProperties(props: RichTextContainerProps, visibilityMap: VisibilityMap) {
-    if (props.editorOption !== "custom") {
-        visibilityMap.customOptions = false;
-    }
-}
+// export function getVisibleProperties(props: RichTextContainerProps, visibilityMap: VisibilityMap) {
+//     if (props.editorOption !== "custom") {
+//         visibilityMap.customOptions = false;
+//     }
+// }
