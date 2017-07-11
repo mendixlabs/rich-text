@@ -12,9 +12,6 @@
     "pretest",
     "lint"
   ],
-  "pre-push": [
-    "test"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/mendixlabs/rich-text"
@@ -63,7 +60,6 @@
     "mendix-client": "https://github.com/FlockOfBirds/Mendix-client-typing/archive/7.1.0.tar.gz",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",
-    "pre-push": "^0.1.1",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
