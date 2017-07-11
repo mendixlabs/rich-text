@@ -85,17 +85,8 @@
     }
 
     &.read-only-text {
-        @include hide-toolbar();
-
-        .ql-container {
-            &.ql-snow {
-                border: none;
-            }
-
-            .ql-editor {
-                padding: 0;
-                min-height: 100%;
-            }
+        p {
+            margin-bottom: 0;
         }
     }
 

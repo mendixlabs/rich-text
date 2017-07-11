@@ -39,8 +39,8 @@
             <category>Appearance</category>
             <description/>
             <enumerationValues>
-                <enumerationValue key="bordered">Bordered</enumerationValue>
                 <enumerationValue key="text">Rich text</enumerationValue>
+                <enumerationValue key="bordered">Bordered</enumerationValue>
                 <enumerationValue key="borderedToolbar">Bordered toolbar</enumerationValue>
             </enumerationValues>
         </property>

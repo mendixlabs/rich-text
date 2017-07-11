@@ -58,12 +58,18 @@ class RichText extends Component<RichTextProps, {}> {
     render() {
         const { className, hasContext, readOnly, readOnlyStyle } = this.props;
 
+        if (readOnly && readOnlyStyle === "text") {
+            return DOM.div({
+                className: "widget-rich-text read-only-text",
+                dangerouslySetInnerHTML: { __html: this.props.value }
+            });
+        }
+
         return DOM.div({
                 className: classNames("widget-rich-text", className, {
                     "no-context": !hasContext,
                     "read-only-bordered": readOnly && readOnlyStyle === "bordered",
-                    "read-only-bordered-toolbar": readOnly && readOnlyStyle === "borderedToolbar",
-                    "read-only-text": readOnly && readOnlyStyle === "text"
+                    "read-only-bordered-toolbar": readOnly && readOnlyStyle === "borderedToolbar"
                 }),
                 style: this.props.style
             },
@@ -78,13 +84,18 @@ class RichText extends Component<RichTextProps, {}> {
         this.setUpEditor(this.props);
     }
 
-    componentWillReceiveProps(nextProps: RichTextProps) {
-        this.updateEditor(nextProps);
+    componentDidUpdate(prevProps: RichTextProps) {
+        if (prevProps.readOnly && !this.props.readOnly) {
+            this.setUpEditor(this.props);
+        }
+        this.updateEditor(this.props);
     }
 
     componentWillUnmount() {
         this.handleSelectionChange();
-        this.quill.off("selection-change", this.handleSelectionChange);
+        if (this.quill) {
+            this.quill.off("selection-change", this.handleSelectionChange);
+        }
     }
 
     private setQuillNode(node: HTMLElement) {
@@ -121,18 +132,20 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     private setEditorStyle(props: RichTextProps) {
-        const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
-        if (quillEditor) {
-            if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {
-                quillEditor.classList.add("form-control");
-            }
+        if (this.quillNode) {
+            const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
+            if (quillEditor) {
+                if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {
+                    quillEditor.classList.add("form-control");
+                }
 
-            const averageLineHeight = 1.42857;
-            if (props.minNumberOfLines > 0) {
-                quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * averageLineHeight}em`;
-            }
-            if (props.maxNumberOfLines > 0) {
-                quillEditor.style.maxHeight = `${(props.maxNumberOfLines + 1) * averageLineHeight}em`;
+                const averageLineHeight = 1.42857;
+                if (props.minNumberOfLines > 0) {
+                    quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * averageLineHeight}em`;
+                }
+                if (props.maxNumberOfLines > 0) {
+                    quillEditor.style.maxHeight = `${(props.maxNumberOfLines + 1) * averageLineHeight}em`;
+                }
             }
         }
     }
