@@ -64,7 +64,7 @@
         </property>
         <property key="customOptions" type="object" isList="true" required="false">
             <caption>Options</caption>
-            <category>Custom</category>
+            <category>Custom options</category>
             <description>Group the editor options you wish to appear</description>
             <properties>
                 <property key="option" type="enumeration" defaultValue="bold">
@@ -72,10 +72,10 @@
                     <category>Options</category>
                     <description>Use the spacer to group the different options</description>
                     <enumerationValues>
-                        <enumerationValue key="spacer">Spacer</enumerationValue>
                         <enumerationValue key="bold">Bold</enumerationValue>
                         <enumerationValue key="italic">Italic</enumerationValue>
                         <enumerationValue key="underline">Underline</enumerationValue>
+                        <enumerationValue key="spacer">Spacer</enumerationValue>
                         <enumerationValue key="strike">Strike</enumerationValue>
                         <enumerationValue key="link">Link</enumerationValue>
                         <enumerationValue key="headings">Headings</enumerationValue>

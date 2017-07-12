@@ -60,8 +60,9 @@ class RichText extends Component<RichTextProps, {}> {
 
         if (readOnly && readOnlyStyle === "text") {
             return DOM.div({
-                className: "widget-rich-text read-only-text",
-                dangerouslySetInnerHTML: { __html: this.props.value }
+                className: classNames("widget-rich-text read-only-text", className),
+                dangerouslySetInnerHTML: { __html: this.props.value },
+                style: this.props.style
             });
         }
 
@@ -152,7 +153,7 @@ class RichText extends Component<RichTextProps, {}> {
 
     private getEditorOptions(): Quill.StringMap {
         if (this.props.editorOption === "basic") {
-            return this.getBasicOptions();
+            return RichText.getBasicOptions();
         }
         if (this.props.editorOption === "extended") {
             return RichText.getAdvancedOptions();
@@ -161,7 +162,7 @@ class RichText extends Component<RichTextProps, {}> {
         return RichText.getCustomOptions(this.props.customOptions || null);
     }
 
-    private getBasicOptions(): Quill.StringMap {
+    private static getBasicOptions(): Quill.StringMap {
         return {
             toolbar: [
                 [ "bold", "italic", "underline" ],

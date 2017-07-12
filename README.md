@@ -2,9 +2,10 @@
 Rich inline or toolbar text editing
 
 ## Features
-* Edit selected text
+* Format selected text
 * HTML output of formatted text
 * Show editor options either on a toolbar or as a bubble
+* Use the custom option to select which editing options you want to show
 
 ### Keyboard shortcuts
 * Ctrl + B: Bold
@@ -30,7 +31,7 @@ Prerequisite: Install git, node package manager, webpack CLI, grunt CLI, Karma C
 
 To contribute, fork and clone.
 
-    > git clone https://github.com/mendixlabs/text-editor.git
+    > git clone https://github.com/mendixlabs/rich-text.git
 
 The code is in typescript. Use a typescript IDE of your choice, like Visual Studio Code or WebStorm.
 
@@ -42,7 +43,7 @@ Create a folder named `dist` in the project root.
 
 Create a Mendix test project in the dist folder and rename its root folder to `dist/MxTestProject`. Changes to the widget code shall be automatically pushed to this test project.
 
-[https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk](https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/RichText.mpk)
+[https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk](https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk)
 
 To automatically compile, bundle and push code changes to the running test project, run:
 

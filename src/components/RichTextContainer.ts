@@ -87,7 +87,7 @@ class RichTextContainer extends Component<RichTextContainerProps, RichTextState>
         return "";
     }
 
-    private isReadOnly() {
+    private isReadOnly(): boolean {
         const { stringAttribute, editable, mxObject, readOnly } = this.props;
         if (editable === "default" && mxObject) {
             return readOnly || mxObject.isReadonlyAttr(stringAttribute);
