@@ -27,8 +27,9 @@
     "@types/jasmine": "^2.5.53",
     "@types/karma": "^0.13.36",
     "@types/quill": "0.0.31",
-    "@types/react": "^15.0.37",
+    "@types/react": "^15.0.38",
     "@types/react-dom": "^15.5.1",
+    "@types/sanitize-html": "^1.13.31",
     "check-dependencies": "^1.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "core-js": "^2.4.1",
@@ -72,12 +73,13 @@
     "tslint": "^5.5.0",
     "tslint-eslint-rules": "^4.1.0",
     "typescript": "^2.4.1",
-    "webpack": "^3.1.0",
+    "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "quill": "^1.2.6"
+    "quill": "^1.2.6",
+    "sanitize-html": "^1.14.1"
   }
 }
