@@ -79,13 +79,13 @@
         }
     }
 
-    &.read-only-text {
+    &.disabled-text {
         p {
             margin-bottom: 0;
         }
     }
 
-    &.read-only-bordered {
+    &.disabled-bordered {
         @include hide-toolbar();
 
         .widget-rich-text-quill {
@@ -101,7 +101,7 @@
         }
     }
 
-    &.read-only-bordered-toolbar {
+    &.disabled-bordered-toolbar {
         .widget-rich-text-quill {
             background-color: #eee;
 

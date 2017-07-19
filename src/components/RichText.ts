@@ -1,52 +1,42 @@
-import { Component, DOM } from "react";
+import { Component, ReactNode, createElement } from "react";
 import * as classNames from "classnames";
 
 import * as Quill from "quill";
-import { EditorOption, ReadOnlyStyle } from "./RichTextContainer";
+import * as sanitizeHtml from "sanitize-html";
+
+import { ReadOnlyStyle } from "./RichTextContainer";
 
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import "../ui/RichText.scss";
+import { getAdvancedOptions, getBasicOptions, getToolbar } from "../utils/Quill";
 
-interface RichTextProps {
-    className?: string;
+export interface CommonRichTextProps {
     editorOption: EditorOption;
-    onChange?: (value: string) => void;
+    hasContext: boolean;
+    value: string;
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
-    hasContext: boolean;
-    style?: object;
-    value: string;
-    theme: "bubble" | "snow";
-    customOptions?: Array<{ option: string }>;
+    theme: Theme;
+    customOptions?: { option: string }[];
     minNumberOfLines: number;
     maxNumberOfLines: number;
 }
 
+interface RichTextProps extends CommonRichTextProps {
+    className?: string;
+    onChange?: (value: string) => void;
+    style?: object;
+}
+
+export type EditorOption = "basic" | "extended" | "custom";
+export type Theme = "snow" | "bubble";
+
+// TODO: look into using a state machine
+// TODO: Clean out the spaghetti
 class RichText extends Component<RichTextProps, {}> {
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
-    private static quillOptions: { [key: string]: any } = {
-        align: { align: [] },
-        blockQuote: "blockquote",
-        bold: "bold",
-        bulletList: { list: "bullet" },
-        clean: "clean",
-        codeBlock: "code-block",
-        direction: { direction: "rtl" },
-        fillColor: { background: [] },
-        headings: { header: [ 1, 2, 3, 4, 5, 6, false ] },
-        indent: { indent: "-1" },
-        italic: "italic",
-        link: "link",
-        orderedList: { list: "ordered" },
-        outdent: { indent: "+1" },
-        strike: "strike",
-        subScript: { script: "sub" },
-        superScript: { script: "super" },
-        textColor: { color: [] },
-        underline: "underline"
-    };
 
     constructor(props: RichTextProps) {
         super(props);
@@ -56,28 +46,15 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     render() {
-        const { className, hasContext, readOnly, readOnlyStyle } = this.props;
-
-        if (readOnly && readOnlyStyle === "text") {
-            return DOM.div({
-                className: classNames("widget-rich-text read-only-text", className),
-                dangerouslySetInnerHTML: { __html: this.props.value },
-                style: this.props.style
-            });
-        }
-
-        return DOM.div({
-                className: classNames("widget-rich-text", className, {
-                    "no-context": !hasContext,
-                    "read-only-bordered": readOnly && readOnlyStyle === "bordered",
-                    "read-only-bordered-toolbar": readOnly && readOnlyStyle === "borderedToolbar"
+        return createElement("div",
+            {
+                className: classNames("widget-rich-text", this.props.className, {
+                    [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly
                 }),
+                dangerouslySetInnerHTML: this.getReadOnlyText(),
                 style: this.props.style
             },
-            DOM.div({
-                className: classNames("widget-rich-text-quill"),
-                ref: this.setQuillNode
-            })
+            this.renderQuillNode()
         );
     }
 
@@ -86,7 +63,7 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     componentDidUpdate(prevProps: RichTextProps) {
-        if (prevProps.readOnly && !this.props.readOnly) {
+        if (prevProps.readOnly && !this.props.readOnly && this.props.readOnlyStyle !== "text") {
             this.setUpEditor(this.props);
         }
         this.updateEditor(this.props);
@@ -97,6 +74,29 @@ class RichText extends Component<RichTextProps, {}> {
         if (this.quill) {
             this.quill.off("selection-change", this.handleSelectionChange);
         }
+    }
+
+    private static getReadOnlyClasses(readOnlyStyle: ReadOnlyStyle): string {
+        return classNames({
+            "disabled-text": readOnlyStyle === "text",
+            "disabled-bordered": readOnlyStyle === "bordered",
+            "disabled-bordered-toolbar": readOnlyStyle === "borderedToolbar"
+        });
+    }
+
+    private getReadOnlyText(): { __html: string } | undefined {
+        return this.props.readOnly && this.props.readOnlyStyle === "text"
+            ? { __html: sanitizeHtml(this.props.value) }
+            : undefined;
+    }
+
+    private renderQuillNode(): ReactNode {
+        return !(this.props.readOnly && this.props.readOnlyStyle === "text")
+            ? createElement("div", {
+                className: classNames("widget-rich-text-quill"),
+                ref: this.setQuillNode
+            })
+            : null;
     }
 
     private setQuillNode(node: HTMLElement) {
@@ -133,14 +133,15 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     private setEditorStyle(props: RichTextProps) {
-        if (this.quillNode) {
+        if (this.quillNode) { // Look into silencing ts compiler on this
             const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
             if (quillEditor) {
+                // may not need readOnlyStyle = text... check
                 if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {
                     quillEditor.classList.add("form-control");
                 }
 
-                const averageLineHeight = 1.42857;
+                const averageLineHeight = 1.42857; // move to top of class. Document source of magic number. Voldemort
                 if (props.minNumberOfLines > 0) {
                     quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * averageLineHeight}em`;
                 }
@@ -153,64 +154,13 @@ class RichText extends Component<RichTextProps, {}> {
 
     private getEditorOptions(): Quill.StringMap {
         if (this.props.editorOption === "basic") {
-            return RichText.getBasicOptions();
+            return getBasicOptions();
         }
         if (this.props.editorOption === "extended") {
-            return RichText.getAdvancedOptions();
+            return getAdvancedOptions();
         }
 
-        return RichText.getCustomOptions(this.props.customOptions || null);
-    }
-
-    private static getBasicOptions(): Quill.StringMap {
-        return {
-            toolbar: [
-                [ "bold", "italic", "underline" ],
-                [ { list: "ordered" }, { list: "bullet" } ]
-            ]
-        };
-    }
-
-    private static getAdvancedOptions(): Quill.StringMap {
-        return {
-            toolbar: [
-                [ RichText.quillOptions.headings ],
-                [ "bold", "italic", "underline", "strike", { color: [] }, { background: [] } ],
-                [ "link" ],
-                [ { list: "ordered" }, { list: "bullet" } ],
-                [ { indent: "-1" }, { indent: "+1" } ],
-                [ { align: [] } ],
-                [ "clean" ]
-            ]
-        };
-    }
-
-    private static getCustomOptions(options: Array<{ option: string }> | null) {
-        const toolbar: { toolbar?: any[] } = {};
-        if (options && options.length) {
-            toolbar.toolbar = [ ...this.processCustomOptions(options) ];
-        }
-
-        return toolbar;
-    }
-
-    private static processCustomOptions(options: Array<{ option: string }>): any[] {
-        const validOptions: any[] = [];
-        let grouping: any[] = [];
-        options.forEach(option => {
-            if (option.option === "spacer") {
-                validOptions.push(grouping);
-                grouping = [];
-            } else {
-                grouping.push(RichText.quillOptions[option.option]);
-            }
-        });
-
-        if (grouping.length) {
-            validOptions.push(grouping);
-        }
-
-        return validOptions;
+        return getToolbar(this.props.customOptions || null);
     }
 }
 

@@ -4,7 +4,7 @@ import { DOM, createElement } from "react";
 import { RichText, RichTextProps } from "../RichText";
 
 describe("RichText", () => {
-    const renderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, { ...props }));
+    const renderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, props));
     let textEditor: ShallowWrapper<RichTextProps, any>;
     const defaultProps: RichTextProps = {
         editorOption: "basic",
@@ -15,7 +15,7 @@ describe("RichText", () => {
         readOnly: false,
         readOnlyStyle: "bordered",
         theme: "snow",
-        value: `<p>Rich Text</p>`
+        value: "<p>Rich Text</p>"
     };
 
     describe("that is not read-only", () => {
@@ -32,8 +32,8 @@ describe("RichText", () => {
         it("renders a quill editor", () => {
             textEditor = renderTextEditor(defaultProps);
             const textEditorInstance = textEditor.instance() as any;
-            const quillNode = textEditorInstance.quillNode = document.createElement("div");
-            document.createElement("div").appendChild(quillNode);
+            textEditorInstance.quillNode = document.createElement("div");
+            document.createElement("div").appendChild(textEditorInstance.quillNode);
 
             const editorSpy = spyOn(textEditorInstance, "setUpEditor").and.callThrough();
             textEditorInstance.componentDidMount();
@@ -42,10 +42,10 @@ describe("RichText", () => {
         });
 
         it("updates when the editor value changes", () => {
-            textEditor = renderTextEditor(defaultProps);
+            textEditor = renderTextEditor(defaultProps); // extract into a beforeEach
             const textEditorInstance = textEditor.instance() as any;
-            const quillNode = textEditorInstance.quillNode = document.createElement("div");
-            document.createElement("div").appendChild(quillNode);
+            textEditorInstance.quillNode = document.createElement("div");
+            document.createElement("div").appendChild(textEditorInstance.quillNode);
 
             const editorSpy = spyOn(textEditorInstance, "updateEditor").and.callThrough();
             textEditorInstance.componentDidUpdate(defaultProps);
@@ -73,7 +73,7 @@ describe("RichText", () => {
                 expect(toolbar.options.container.length).toBe(2);
             });
 
-            it("extended renders an advanced text editor", () => {
+            it("extended renders an extended text editor", () => {
                 defaultProps.editorOption = "extended";
                 const toolbar = getToolBar(defaultProps);
 
@@ -89,7 +89,8 @@ describe("RichText", () => {
             });
         });
     });
-
+// Add tests for invalid HTML
+    // Add tests for sanitized HTML
     describe("that is read-only", () => {
         defaultProps.readOnly = true;
 
@@ -109,7 +110,7 @@ describe("RichText", () => {
             defaultProps.readOnlyStyle = "bordered";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("read-only-bordered")).toBe(true);
+            expect(textEditor.hasClass("read-only-bordered")).toBe(true); // Use toHaveClass instead
         });
 
         it("with read-only style borderedToolbar has the read-only-bordered-toolbar class", () => {
@@ -120,7 +121,7 @@ describe("RichText", () => {
         });
     });
 
-    it("that has no context has the no-context class", () => {
+    it("that has no context has the no-context class", () => { // To be changed
         defaultProps.hasContext = false;
         textEditor = renderTextEditor(defaultProps);
 

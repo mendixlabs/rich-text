@@ -1,7 +1,10 @@
 import { Component, DOM, createElement } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
+
 import { RichText, RichTextProps } from "./components/RichText";
-import TextEditorContainer, { RichTextContainerProps } from "./components/RichTextContainer";
+import { RichTextContainerProps } from "./components/RichTextContainer";
+
+import { parseStyle } from "./utils/ContainerUtils";
 
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
@@ -47,7 +50,7 @@ export class preview extends Component<RichTextContainerProps, {}> {
             minNumberOfLines: props.minNumberOfLines,
             readOnly: props.editable === "never",
             readOnlyStyle: props.readOnlyStyle,
-            style: TextEditorContainer.parseStyle(props.style),
+            style: parseStyle(props.style),
             theme: props.theme,
             value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`
         };

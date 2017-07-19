@@ -75,7 +75,7 @@
                         <enumerationValue key="bold">Bold</enumerationValue>
                         <enumerationValue key="italic">Italic</enumerationValue>
                         <enumerationValue key="underline">Underline</enumerationValue>
-                        <enumerationValue key="spacer">Spacer</enumerationValue>
+                        <enumerationValue key="spacer">-- Spacer --</enumerationValue>
                         <enumerationValue key="strike">Strike</enumerationValue>
                         <enumerationValue key="link">Link</enumerationValue>
                         <enumerationValue key="headings">Headings</enumerationValue>

@@ -138,7 +138,9 @@
       120
     ],
     "arrow-parens": false,
-    "no-namespace": false
+    "no-namespace": false,
+    "array-type": [ true, "array" ],
+    "object-literal-sort-keys": false
   },
   "jsRules": {
     "trailing-comma": [
