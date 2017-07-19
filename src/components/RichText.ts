@@ -5,11 +5,11 @@ import * as Quill from "quill";
 import * as sanitizeHtml from "sanitize-html";
 
 import { ReadOnlyStyle } from "./RichTextContainer";
+import { getAdvancedOptions, getBasicOptions, getToolbar } from "../utils/Quill";
 
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import "../ui/RichText.scss";
-import { getAdvancedOptions, getBasicOptions, getToolbar } from "../utils/Quill";
 
 export interface CommonRichTextProps {
     editorOption: EditorOption;
@@ -109,6 +109,8 @@ export class RichText extends Component<RichTextProps, {}> {
             });
 
             this.quill.on("selection-change", this.handleSelectionChange);
+
+            this.updateEditor(props);
         }
     }
 

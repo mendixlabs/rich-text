@@ -1,41 +1,38 @@
-import { Component, DOM, createElement } from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import { Component, createElement } from "react";
 
 import { RichText, RichTextProps } from "./components/RichText";
 import { RichTextContainerProps } from "./components/RichTextContainer";
 
 import { parseStyle } from "./utils/ContainerUtils";
 
-// tslint:disable-next-line class-name
-export class preview extends Component<RichTextContainerProps, {}> {
-    private richTextNode: HTMLDivElement;
+interface PreviewState {
+    reloadEditor: boolean;
+}
 
+// tslint:disable-next-line class-name
+export class preview extends Component<RichTextContainerProps, PreviewState> {
     constructor(props: RichTextContainerProps) {
         super(props);
 
-        this.getRichTextNode = this.getRichTextNode.bind(this);
+        this.state = {
+            reloadEditor: false
+        };
     }
 
     render() {
-        return DOM.div({ ref: this.getRichTextNode });
+        return !this.state.reloadEditor
+            ? createElement(RichText, preview.transformProps(this.props))
+            : null;
     }
 
-    componentDidMount() {
-        render(createElement(RichText, preview.transformProps(this.props)), this.richTextNode);
-        this.forceUpdate();
-    }
-
-    componentWillReceiveProps(newProps: RichTextContainerProps) {
-        unmountComponentAtNode(this.richTextNode);
-        render(createElement(RichText, preview.transformProps(newProps)), this.richTextNode);
+    componentWillReceiveProps() {
+        this.setState({ reloadEditor: true });
     }
 
     componentDidUpdate() {
-        render(createElement(RichText, preview.transformProps(this.props)), this.richTextNode);
-    }
-
-    private getRichTextNode(node: HTMLDivElement) {
-        this.richTextNode = node;
+        if (this.state.reloadEditor) {
+            this.setState({ reloadEditor: false });
+        }
     }
 
     private static transformProps(props: RichTextContainerProps): RichTextProps {

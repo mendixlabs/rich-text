@@ -2,7 +2,7 @@ interface Option {
     option: string;
 }
 
-export const quillOptions: { [key: string]: any } = { // Extract defaults.. move to the top
+export const quillOptions: { [key: string]: any } = {
     align: { align: [] },
     blockQuote: "blockquote",
     bold: "bold",
@@ -36,7 +36,6 @@ export const getToolbar = (options: Option[] | null) => {
 const parseToolbarOptions = (options: Option[]): any[] => {
     const validOptions: any[] = [];
     let grouping: any[] = [];
-    // TODO: Look into using some array function (reduce or other) --- Failed with reduce
     options.forEach(option => {
         if (option.option === "spacer") {
             validOptions.push(grouping);
