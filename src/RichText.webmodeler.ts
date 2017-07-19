@@ -45,7 +45,6 @@ export class preview extends Component<RichTextContainerProps, {}> {
             className: props.class,
             customOptions: props.customOptions,
             editorOption: props.editorOption,
-            hasContext: true,
             maxNumberOfLines: props.maxNumberOfLines,
             minNumberOfLines: props.minNumberOfLines,
             readOnly: props.editable === "never",

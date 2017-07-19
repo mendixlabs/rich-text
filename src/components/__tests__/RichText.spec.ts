@@ -8,7 +8,6 @@ describe("RichText", () => {
     let textEditor: ShallowWrapper<RichTextProps, any>;
     const defaultProps: RichTextProps = {
         editorOption: "basic",
-        hasContext: true,
         maxNumberOfLines: 10,
         minNumberOfLines: 10,
         onChange: jasmine.any(Function),
@@ -119,12 +118,5 @@ describe("RichText", () => {
 
             expect(textEditor.hasClass("read-only-bordered-toolbar")).toBe(true);
         });
-    });
-
-    it("that has no context has the no-context class", () => { // To be changed
-        defaultProps.hasContext = false;
-        textEditor = renderTextEditor(defaultProps);
-
-        expect(textEditor.hasClass("no-context")).toBe(true);
     });
 });

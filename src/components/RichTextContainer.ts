@@ -46,6 +46,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 hasContext: !!this.props.mxObject,
                 onChange: this.handleOnChange,
                 readOnly: this.isReadOnly(),
+                readOnlyStyle: this.props.mxObject ? this.props.readOnlyStyle : "bordered",
                 style: parseStyle(this.props.style),
                 value: this.state.value
             })
@@ -66,8 +67,8 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     }
 
     private isReadOnly(): boolean {
-        return this.props.editable === "default" && this.props.mxObject &&
-            (this.props.readOnly || this.props.mxObject.isReadonlyAttr(this.props.stringAttribute));
+        return !this.props.mxObject || this.props.editable === "never" || this.props.readOnly ||
+            this.props.mxObject.isReadonlyAttr(this.props.stringAttribute);
     }
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {

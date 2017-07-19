@@ -62,23 +62,6 @@
         }
     }
 
-    &.no-context {
-        @include hide-toolbar();
-
-        .widget-rich-text-quill {
-            &.ql-snow {
-                @include text-area-border-radius(4px);
-            }
-
-            &.ql-container {
-                .ql-editor {
-                    min-height: 100px;
-                    background-color: #eee;
-                }
-            }
-        }
-    }
-
     &.disabled-text {
         p {
             margin-bottom: 0;
@@ -90,9 +73,7 @@
 
         .widget-rich-text-quill {
             &.ql-container {
-                &.ql-snow {
-                    @include text-area-border-radius(4px);
-                }
+                @include text-area-border-radius(4px);
             }
 
             .ql-editor {

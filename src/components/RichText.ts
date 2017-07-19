@@ -13,7 +13,6 @@ import { getAdvancedOptions, getBasicOptions, getToolbar } from "../utils/Quill"
 
 export interface CommonRichTextProps {
     editorOption: EditorOption;
-    hasContext: boolean;
     value: string;
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
@@ -23,7 +22,7 @@ export interface CommonRichTextProps {
     maxNumberOfLines: number;
 }
 
-interface RichTextProps extends CommonRichTextProps {
+export interface RichTextProps extends CommonRichTextProps {
     className?: string;
     onChange?: (value: string) => void;
     style?: object;
@@ -32,11 +31,10 @@ interface RichTextProps extends CommonRichTextProps {
 export type EditorOption = "basic" | "extended" | "custom";
 export type Theme = "snow" | "bubble";
 
-// TODO: look into using a state machine
-// TODO: Clean out the spaghetti
-class RichText extends Component<RichTextProps, {}> {
+export class RichText extends Component<RichTextProps, {}> {
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
+    private averageLineHeight = 1.42857; // Copied from the bootstrap <p/> element css
 
     constructor(props: RichTextProps) {
         super(props);
@@ -125,7 +123,7 @@ class RichText extends Component<RichTextProps, {}> {
 
     private updateEditor(props: RichTextProps) {
         if (this.quill) {
-            this.quill.enable(!props.readOnly && props.hasContext);
+            this.quill.enable(!props.readOnly);
             this.quill.clipboard.dangerouslyPasteHTML(props.value);
 
             this.setEditorStyle(props);
@@ -133,20 +131,16 @@ class RichText extends Component<RichTextProps, {}> {
     }
 
     private setEditorStyle(props: RichTextProps) {
-        if (this.quillNode) { // Look into silencing ts compiler on this
+        if (this.quillNode) {
             const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
             if (quillEditor) {
-                // may not need readOnlyStyle = text... check
-                if (!props.readOnly || props.readOnly && props.readOnlyStyle !== "text" || !props.hasContext) {
-                    quillEditor.classList.add("form-control");
-                }
+                quillEditor.classList.add("form-control");
 
-                const averageLineHeight = 1.42857; // move to top of class. Document source of magic number. Voldemort
                 if (props.minNumberOfLines > 0) {
-                    quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * averageLineHeight}em`;
+                    quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * this.averageLineHeight}em`;
                 }
                 if (props.maxNumberOfLines > 0) {
-                    quillEditor.style.maxHeight = `${(props.maxNumberOfLines + 1) * averageLineHeight}em`;
+                    quillEditor.style.maxHeight = `${(props.maxNumberOfLines + 1) * this.averageLineHeight}em`;
                 }
             }
         }
@@ -163,5 +157,3 @@ class RichText extends Component<RichTextProps, {}> {
         return getToolbar(this.props.customOptions || null);
     }
 }
-
-export { RichText, RichTextProps };
