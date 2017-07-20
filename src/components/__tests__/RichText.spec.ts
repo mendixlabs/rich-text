@@ -1,5 +1,5 @@
 import { ShallowWrapper, shallow } from "enzyme";
-import { DOM, createElement } from "react";
+import { createElement } from "react";
 
 import { RichText, RichTextProps } from "../RichText";
 
@@ -22,8 +22,8 @@ describe("RichText", () => {
             textEditor = renderTextEditor(defaultProps);
 
             expect(textEditor).toBeElement(
-                DOM.div({ className: "widget-rich-text read-only-bordered" },
-                    DOM.div({ className: "widget-rich-text-quill" })
+                createElement("div", { className: "widget-rich-text disabled-bordered" },
+                    createElement("div", { className: "widget-rich-text-quill" })
                 )
             );
         });
@@ -52,7 +52,7 @@ describe("RichText", () => {
             defaultProps.value = "New value";
             textEditorInstance.componentDidUpdate(defaultProps);
 
-            expect(editorSpy).toHaveBeenCalledTimes(2);
+            expect(editorSpy).toHaveBeenCalledTimes(3);
         });
 
         describe("with editor mode set to", () => {
@@ -76,7 +76,7 @@ describe("RichText", () => {
                 defaultProps.editorOption = "extended";
                 const toolbar = getToolBar(defaultProps);
 
-                expect(toolbar.options.container.length).toBe(7);
+                expect(toolbar.options.container.length).toBe(6);
             });
 
             it("custom renders a custom toolbar", () => {
@@ -88,7 +88,7 @@ describe("RichText", () => {
             });
         });
     });
-// Add tests for invalid HTML
+    // Add tests for invalid HTML
     // Add tests for sanitized HTML
     describe("that is read-only", () => {
         defaultProps.readOnly = true;
@@ -98,25 +98,25 @@ describe("RichText", () => {
             textEditor = renderTextEditor(defaultProps);
 
             expect(textEditor).toBeElement(
-                DOM.div({
-                    className: "widget-rich-text read-only-text",
+                createElement("div", {
+                    className: "widget-rich-text disabled-text",
                     dangerouslySetInnerHTML: { __html: defaultProps.value }
                 })
             );
         });
 
-        it("with read-only style bordered has the read-only-bordered class", () => {
+        it("with read-only style bordered has the disabled-bordered class", () => {
             defaultProps.readOnlyStyle = "bordered";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("read-only-bordered")).toBe(true); // Use toHaveClass instead
+            expect(textEditor.hasClass("disabled-bordered")).toBe(true); // Use toHaveClass instead
         });
 
-        it("with read-only style borderedToolbar has the read-only-bordered-toolbar class", () => {
+        it("with read-only style borderedToolbar has the disabled-bordered-toolbar class", () => {
             defaultProps.readOnlyStyle = "borderedToolbar";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("read-only-bordered-toolbar")).toBe(true);
+            expect(textEditor.hasClass("disabled-bordered-toolbar")).toBe(true);
         });
     });
 });
