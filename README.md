@@ -13,6 +13,8 @@ Rich inline or toolbar text editing
 * Ctrl + U: Underline
 * Ctrl + Z: Undo
 * Ctrl + Y: Redo
+* -, space : start list
+* tab: not functional, go to next input field
 
 ## Dependencies
 Mendix 7.4
@@ -21,7 +23,7 @@ Mendix 7.4
 http://texteditorwidget.mxapps.io
 
 ## Usage
-Place the widget in a data view, list view or template grid with a data source that has a string attribute.
+Place the widget in a data view, list view or template grid with a data source that has a string attribute and select the 'Value attribute' that contains the editable text.
 
 ## Issues, suggestions and feature requests
 We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/rich-text/issues
@@ -44,6 +46,8 @@ Create a folder named `dist` in the project root.
 Create a Mendix test project in the dist folder and rename its root folder to `dist/MxTestProject`. Changes to the widget code shall be automatically pushed to this test project.
 
 [https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk](https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk)
+
+You can also get the test project from [https://github.com/mendixlabs/rich-text/releases/latest](https://github.com/mendixlabs/rich-text/releases/latest)
 
 To automatically compile, bundle and push code changes to the running test project, run:
 

@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Rich inline or toolbar text editing",
   "scripts": {
+    "start": "nodemon --watch webpack.config.js --watch Gruntfile.js --exec \"grunt",
     "pretest": "tsc",
     "test": "karma start --single-run --codeCoverage && node tests/remap.js",
     "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'"
