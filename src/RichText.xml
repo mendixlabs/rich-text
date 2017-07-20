@@ -7,7 +7,7 @@
     <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAlVJREFUOBGNkt9LVEEUx8+Z2b3XdlVWoRSthB4s6aG3ikKCfhBR+igUWQ/5UuB7ELIr0l8Q9GRv/QWVRGRJRRC9RFKYksViWhq5qXvv7r1z50xzJpR9MPMLdzic+X7OnDlzceD2zwIKkTdEw6O3dhZgG6pl8EphwVw+11S8/7jUsQ12w7LOYN/N2YIxJn/2eONC74mG+Q3HFsGDF2vtT16vtiHiMLLv/OB7c2+k822kaHULbmPLT4vGa0Mzh8fuHMIUZ8vlMhgAIjL08Nlcy7cfQcbOBKQUNg2gNaGdE+xuzYY9p/YsspcZluAlDEMgbUgT6anPpYYP08tN1Zhw8tNyM38cc4732MNeZliuQKUSQmJPVxqoOeeHZ7rbi9f7u6YzO2SYTsuV3p69Tw905d4EKvk6Obfyca5UKTLDcleIIgXaFTC6r2ffl8SAml0MSlUNrYAGlpZVfOxI2wwDpEHEiogZliugtSXIaJWQDqIk+BXEpbCsUdoRG+TxoOSVZQSnhGCG5Qqg3beDolIYr/2uxGtAIJRO0kqTx6CKY6/O82NLons2Q5IZlpuBED6EkY5WQ1URBmVU0f7Ey/mD1WqSqUZJZuLVdxvrOoGYsp9EgZIZluvA8zIQJaSk+Pus9mS/HCT1TTk/EHYIHEea6uoFRuQwSDFTU6CeY2lbdH3lcn7Sf7HznXPULPY2PBa+h/Q8x0Dq6KUp/pVhbDzcf+F01l2xhtk0fDQedHpeFpjF7qtFM3RjV3Hk7lLHpu5/JNcZPDmwWLBN5e0DDT8fbbHx/1XL/AG5x0zzWC9FvAAAAABJRU5ErkJggg==</icon>
     <properties>
         <property key="theme" type="enumeration" defaultValue="snow">
-            <caption>Theme</caption>
+            <caption>Show as</caption>
             <category>Appearance</category>
             <description>Display the editor options in a toolbar or a bubble</description>
             <enumerationValues>
@@ -16,9 +16,9 @@
             </enumerationValues>
         </property>
         <property key="editorOption" type="enumeration" defaultValue="basic">
-            <caption>Editor options</caption>
+            <caption>Text formatting options</caption>
             <category>Appearance</category>
-            <description>Advanced shows all available options while custom lets u choose which buttons to show</description>
+            <description>Formatting options shown in the toolbar or bubble</description>
             <enumerationValues>
                 <enumerationValue key="basic">Basic</enumerationValue>
                 <enumerationValue key="extended">Extended</enumerationValue>
@@ -28,7 +28,7 @@
         <property key="editable" type="enumeration" defaultValue="default">
             <caption>Editable</caption>
             <category>Appearance</category>
-            <description/>
+            <description>The default option is based on the page settings and the attribute's write access</description>
             <enumerationValues>
                 <enumerationValue key="default">Default</enumerationValue>
                 <enumerationValue key="never">Never</enumerationValue>
@@ -47,12 +47,12 @@
         <property key="minNumberOfLines" type="integer" defaultValue="10">
             <caption>Minimum number of lines</caption>
             <category>Appearance</category>
-            <description/>
+            <description>When set to 0, the minimum number of lines won't be set</description>
         </property>
         <property key="maxNumberOfLines" type="integer" defaultValue="10">
             <caption>Maximum number of lines</caption>
             <category>Appearance</category>
-            <description/>
+            <description>If greater that the minimum, the input will auto grow until the specified lines are reached. When set to 0, the maximum number of lines won't be set.</description>
         </property>
         <property key="stringAttribute" type="attribute" required="false">
             <caption>Value attribute</caption>
@@ -63,7 +63,7 @@
             </attributeTypes>
         </property>
         <property key="customOptions" type="object" isList="true" required="false">
-            <caption>Options</caption>
+            <caption>Formatting options</caption>
             <category>Custom options</category>
             <description>Group the editor options you wish to appear</description>
             <properties>
