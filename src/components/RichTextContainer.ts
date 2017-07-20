@@ -39,7 +39,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     }
 
     render() {
-        return createElement(ValidateConfigs, this.props,
+        return createElement(ValidateConfigs, { ...this.props as RichTextContainerProps, showOnError: false },
             createElement(RichText, {
                 ... this.props as any,
                 className: this.props.class,

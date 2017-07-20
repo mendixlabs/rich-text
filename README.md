@@ -44,10 +44,7 @@ To set up the development environment, run:
 Create a folder named `dist` in the project root.
 
 Create a Mendix test project in the dist folder and rename its root folder to `dist/MxTestProject`. Changes to the widget code shall be automatically pushed to this test project.
-
-[https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk](https://github.com/MendixLabs/rich-text/releases/download/v1.0.0/TestRichText.mpk)
-
-You can also get the test project from [https://github.com/mendixlabs/rich-text/releases/latest](https://github.com/mendixlabs/rich-text/releases/latest)
+Or get the test project from [https://github.com/mendixlabs/rich-text/releases/latest](https://github.com/mendixlabs/rich-text/releases/latest)
 
 To automatically compile, bundle and push code changes to the running test project, run:
 

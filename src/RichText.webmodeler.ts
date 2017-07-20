@@ -4,6 +4,7 @@ import { RichText, RichTextProps } from "./components/RichText";
 import { RichTextContainerProps } from "./components/RichTextContainer";
 
 import { parseStyle } from "./utils/ContainerUtils";
+import { ValidateConfigs } from "./components/ValidateProps";
 
 interface PreviewState {
     reloadEditor: boolean;
@@ -21,7 +22,8 @@ export class preview extends Component<RichTextContainerProps, PreviewState> {
 
     render() {
         return !this.state.reloadEditor
-            ? createElement(RichText, preview.transformProps(this.props))
+            ? createElement(ValidateConfigs, { ...this.props as RichTextContainerProps, showOnError: true },
+                createElement(RichText, preview.transformProps(this.props)))
             : null;
     }
 

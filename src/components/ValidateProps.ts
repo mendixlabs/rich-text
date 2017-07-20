@@ -2,16 +2,24 @@ import { Component, ReactElement, createElement } from "react";
 import { RichTextContainerProps } from "./RichTextContainer";
 import { Alert } from "./Alert";
 
-export class ValidateConfigs extends Component<RichTextContainerProps, {}> {
+export class ValidateConfigs extends Component<RichTextContainerProps & { showOnError: boolean }, {}> {
     render() {
         const message = ValidateConfigs.validate(this.props);
 
-        return message
-            ? createElement(Alert, { message })
-            : this.props.children as ReactElement<RichTextContainerProps>;
+        if (message) {
+            const alertClassName = "widget-rich-text-alert";
+            return this.props.showOnError
+                ? createElement("div", { className: "widget-rich-text-invalid" },
+                    createElement(Alert, { className: alertClassName, message }),
+                    this.props.children as ReactElement<RichTextContainerProps>
+                )
+                : createElement(Alert, { className: alertClassName, message });
+        }
+
+        return this.props.children as ReactElement<RichTextContainerProps>;
     }
 
-    private static validate(props: RichTextContainerProps): string {
+    static validate(props: RichTextContainerProps): string {
         if (props.minNumberOfLines < 0) {
             return `The minimum number of lines must not be less than 0`;
         } else if (props.maxNumberOfLines < 0) {
