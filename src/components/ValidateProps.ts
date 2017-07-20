@@ -12,8 +12,14 @@ export class ValidateConfigs extends Component<RichTextContainerProps, {}> {
     }
 
     private static validate(props: RichTextContainerProps): string {
-        return props.minNumberOfLines !== 0 && props.minNumberOfLines > props.maxNumberOfLines
-            ? `The minimum number of lines ${props.minNumberOfLines} should not be greater than the maximum ${props.maxNumberOfLines}` // tslint:disable-line
-            : "";
+        if (props.minNumberOfLines < 0) {
+            return `The minimum number of lines must not be less than 0`;
+        } else if (props.maxNumberOfLines < 0) {
+            return `The maximum number of lines must not be less than 0`;
+        } else if (props.minNumberOfLines !== 0 && props.minNumberOfLines > props.maxNumberOfLines) {
+            return `The minimum number of lines ${props.minNumberOfLines} should not be greater than the maximum ${props.maxNumberOfLines}`; // tslint:disable-line
+        }
+
+        return "";
     }
 }
