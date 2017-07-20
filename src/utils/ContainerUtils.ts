@@ -19,5 +19,5 @@ export const parseStyle = (style = ""): {[key: string]: string} => { // Doesn't 
 };
 
 export const getValue = (attribute: string, defaultValue: MxValue, mxObject?: mendix.lib.MxObject): MxValue => {
-    return mxObject ? mxObject.get(attribute) || defaultValue : defaultValue;
+    return mxObject && attribute.trim() ? mxObject.get(attribute) || defaultValue : defaultValue;
 };

@@ -17,7 +17,7 @@ export interface CommonRichTextProps {
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
     theme: Theme;
-    customOptions?: { option: string }[];
+    customOptions: { option: string }[];
     minNumberOfLines: number;
     maxNumberOfLines: number;
 }
@@ -116,7 +116,7 @@ export class RichText extends Component<RichTextProps, {}> {
 
     private handleSelectionChange() {
         if (this.quill && !this.quill.hasFocus() && this.props.onChange) {
-            const value = (this.quill as any).container.firstChild.innerHTML;
+            const value = this.quill.container.firstChild.innerHTML;
             if (this.props.value !== value) {
                 this.props.onChange(value);
             }
@@ -137,7 +137,6 @@ export class RichText extends Component<RichTextProps, {}> {
             const quillEditor = this.quillNode.getElementsByClassName("ql-editor")[ 0 ] as HTMLDivElement;
             if (quillEditor) {
                 quillEditor.classList.add("form-control");
-
                 if (props.minNumberOfLines > 0) {
                     quillEditor.style.minHeight = `${(props.minNumberOfLines + 1) * this.averageLineHeight}em`;
                 }
@@ -151,11 +150,10 @@ export class RichText extends Component<RichTextProps, {}> {
     private getEditorOptions(): Quill.StringMap {
         if (this.props.editorOption === "basic") {
             return getBasicOptions();
-        }
-        if (this.props.editorOption === "extended") {
+        } else if (this.props.editorOption === "extended") {
             return getAdvancedOptions();
         }
 
-        return getToolbar(this.props.customOptions || null);
+        return getToolbar(this.props.customOptions);
     }
 }

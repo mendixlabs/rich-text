@@ -32,7 +32,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         super(props);
 
         this.state = {
-            value: String(getValue(props.stringAttribute, "", props.mxObject))
+            value: getValue(props.stringAttribute, "", props.mxObject) as string
         };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
@@ -57,7 +57,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         if (newProps.mxObject !== this.props.mxObject) {
             this.resetSubscriptions(newProps.mxObject);
             this.setState({
-                value: String(getValue(newProps.stringAttribute, "", newProps.mxObject))
+                value: getValue(newProps.stringAttribute, "", newProps.mxObject) as string
             });
         }
     }
@@ -88,7 +88,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
 
     private handleSubscriptions() {
         this.setState({
-            value: String(getValue(this.props.stringAttribute, "", this.props.mxObject))
+            value: getValue(this.props.stringAttribute, "", this.props.mxObject) as string
         });
     }
 
@@ -98,7 +98,6 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             return;
         }
         mxObject.set(this.props.stringAttribute, data);
-
         this.executeAction(mxObject, onChangeMicroflow);
     }
 

@@ -7,6 +7,7 @@ describe("RichText", () => {
     const renderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, props));
     let textEditor: ShallowWrapper<RichTextProps, any>;
     const defaultProps: RichTextProps = {
+        customOptions: [],
         editorOption: "basic",
         maxNumberOfLines: 10,
         minNumberOfLines: 10,
@@ -88,8 +89,7 @@ describe("RichText", () => {
             });
         });
     });
-    // Add tests for invalid HTML
-    // Add tests for sanitized HTML
+    // TODO: Add tests for invalid HTML and for sanitized HTML
     describe("that is read-only", () => {
         defaultProps.readOnly = true;
 
@@ -109,14 +109,14 @@ describe("RichText", () => {
             defaultProps.readOnlyStyle = "bordered";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("disabled-bordered")).toBe(true); // Use toHaveClass instead
+            expect(textEditor).toHaveClass("disabled-bordered");
         });
 
         it("with read-only style borderedToolbar has the disabled-bordered-toolbar class", () => {
             defaultProps.readOnlyStyle = "borderedToolbar";
             textEditor = renderTextEditor(defaultProps);
 
-            expect(textEditor.hasClass("disabled-bordered-toolbar")).toBe(true);
+            expect(textEditor).toHaveClass("disabled-bordered-toolbar");
         });
     });
 });
