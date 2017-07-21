@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/mendixlabs/rich-text.svg?branch=master)](https://travis-ci.org/mendixlabs/rich-text)
+[![Dependency Status](https://david-dm.org/mendixlabs/rich-text.svg)](https://david-dm.org/mendixlabs/text-editor)
+[![Dev Dependency Status](https://david-dm.org/mendixlabs/rich-text.svg#info=devDependencies)](https://david-dm.org/mendixlabs/rich-text#info=devDependencies)
+[![codecov](https://codecov.io/gh/mendixlabs/rich-text/branch/master/graph/badge.svg)](https://codecov.io/gh/mendixlabs/rich-text)
+
 # Text Editor
 Rich inline or toolbar text editing
 
