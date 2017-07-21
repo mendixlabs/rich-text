@@ -5,12 +5,13 @@
   "description": "Rich inline or toolbar text editing",
   "scripts": {
     "start": "nodemon --watch webpack.config.js --watch Gruntfile.js --exec \"grunt",
-    "pretest": "tsc",
+    "emit": "tsc",
+    "pretest": "tsc && npm run lint && grunt release",
     "test": "karma start --single-run --codeCoverage && node tests/remap.js",
     "lint": "tslint -c tslint.json '**/*.ts' '**/*.tsx' --exclude '**/node_modules/**'"
   },
   "pre-commit": [
-    "pretest",
+    "emit",
     "lint"
   ],
   "repository": {
@@ -60,6 +61,7 @@
     "karma-webpack": "^2.0.4",
     "mendix-client": "https://github.com/FlockOfBirds/Mendix-client-typing/archive/7.1.0.tar.gz",
     "node-sass": "^4.5.3",
+    "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "react": "^15.6.1",
