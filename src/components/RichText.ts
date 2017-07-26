@@ -47,7 +47,8 @@ export class RichText extends Component<RichTextProps, {}> {
         return createElement("div",
             {
                 className: classNames("widget-rich-text", this.props.className, {
-                    [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly
+                    [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly,
+                    "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions.length === 0
                 }),
                 dangerouslySetInnerHTML: this.getReadOnlyText(),
                 style: this.props.style
@@ -154,6 +155,6 @@ export class RichText extends Component<RichTextProps, {}> {
             return getAdvancedOptions();
         }
 
-        return getToolbar(this.props.customOptions);
+        return getToolbar(this.props.customOptions.length ? this.props.customOptions : [ { option: "spacer" } ]);
     }
 }

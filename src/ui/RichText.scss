@@ -33,6 +33,12 @@
         }
     }
 
+    &.buttons-hidden {
+        .ql-formats {
+            visibility: hidden;
+        }
+    }
+
     @mixin text-area-border-radius($radius) {
         .ql-editor {
             border-top-left-radius: $radius;
