@@ -3,7 +3,7 @@
 [![Dev Dependency Status](https://david-dm.org/mendixlabs/rich-text.svg#info=devDependencies)](https://david-dm.org/mendixlabs/rich-text#info=devDependencies)
 [![codecov](https://codecov.io/gh/mendixlabs/rich-text/branch/master/graph/badge.svg)](https://codecov.io/gh/mendixlabs/rich-text)
 
-# Text Editor
+# Rich Text
 Rich inline or toolbar text editing
 
 ## Features
