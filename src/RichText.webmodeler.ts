@@ -4,7 +4,7 @@ import { RichText, RichTextProps } from "./components/RichText";
 import { RichTextContainerProps } from "./components/RichTextContainer";
 
 import { parseStyle } from "./utils/ContainerUtils";
-import { ValidateConfigs } from "./components/ValidateProps";
+import { ValidateConfigs } from "./components/ValidateConfigs";
 
 interface PreviewState {
     reloadEditor: boolean;

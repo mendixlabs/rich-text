@@ -1,7 +1,7 @@
 import { Component, createElement } from "react";
 
 import { CommonRichTextProps, RichText } from "./RichText";
-import { ValidateConfigs } from "./ValidateProps";
+import { ValidateConfigs } from "./ValidateConfigs";
 
 import { getValue, parseStyle } from "../utils/ContainerUtils";
 
