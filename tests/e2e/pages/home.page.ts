@@ -1,9 +1,7 @@
 class HomePage {
-
     public get richText1() { return browser.element(".mx-name-richText1 .ql-editor"); }
     public get richText2() { return browser.element(".mx-name-richText2 .ql-editor"); }
     public get richText4() { return browser.element(".mx-name-richText4 .ql-editor"); }
-    public get richText5() { return browser.element(".mx-name-richText5 .ql-editor"); }
     public get textArea2() { return browser.element(".mx-name-textArea2"); }
     public get textArea3() { return browser.element(".mx-name-textArea3"); }
 
@@ -11,5 +9,7 @@ class HomePage {
         browser.url("/");
     }
 }
+
 const page = new HomePage();
+
 export default page;

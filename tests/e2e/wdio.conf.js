@@ -19,11 +19,9 @@ exports.config = {
     connectionRetryTimeout: 90000,
     connectionRetryCount: 0,
     services: [ "selenium-standalone" ],
-
     framework: "jasmine",
     reporters: [ "spec" ],
     execArgv: debug ? [ "--inspect" ] : undefined,
-    // Options to be passed to Jasmine.
     jasmineNodeOpts: {
         defaultTimeoutInterval: debug ? (60 * 60 * 1000) : (10 * 1000),
         expectationResultHandler: function(passed, assertion) {
