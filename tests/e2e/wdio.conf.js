@@ -20,7 +20,7 @@ exports.config = {
     connectionRetryCount: 0,
     services: [ "selenium-standalone" ],
     framework: "jasmine",
-    reporters: [ "spec" ],
+    reporters: [ "dot", "spec" ],
     execArgv: debug ? [ "--inspect" ] : undefined,
     jasmineNodeOpts: {
         defaultTimeoutInterval: debug ? (60 * 60 * 1000) : (10 * 1000),
