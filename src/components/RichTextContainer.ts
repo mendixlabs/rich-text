@@ -93,12 +93,11 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     }
 
     private handleOnChange(data: string) {
-        const { mxObject, onChangeMicroflow } = this.props;
-        if (!mxObject) {
+        if (!this.props.mxObject) {
             return;
         }
-        mxObject.set(this.props.stringAttribute, data);
-        this.executeAction(mxObject, onChangeMicroflow);
+        this.props.mxObject.set(this.props.stringAttribute, data);
+        this.executeAction(this.props.mxObject, this.props.onChangeMicroflow);
     }
 
     private executeAction(mxObject: mendix.lib.MxObject, action?: string) {

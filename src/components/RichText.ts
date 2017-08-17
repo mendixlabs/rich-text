@@ -20,6 +20,7 @@ export interface CommonRichTextProps {
     customOptions: { option: string }[];
     minNumberOfLines: number;
     maxNumberOfLines: number;
+    recreate?: boolean;
 }
 
 export interface RichTextProps extends CommonRichTextProps {
@@ -32,6 +33,7 @@ export type EditorOption = "basic" | "extended" | "custom";
 export type Theme = "snow" | "bubble";
 
 export class RichText extends Component<RichTextProps, {}> {
+    private richTextNode?: HTMLElement;
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
     private averageLineHeight = 1.42857; // Copied from the bootstrap <p/> element css
@@ -41,6 +43,7 @@ export class RichText extends Component<RichTextProps, {}> {
 
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
         this.setQuillNode = this.setQuillNode.bind(this);
+        this.setRichTextNode = this.setRichTextNode.bind(this);
     }
 
     render() {
@@ -51,6 +54,7 @@ export class RichText extends Component<RichTextProps, {}> {
                     "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions.length === 0
                 }),
                 dangerouslySetInnerHTML: this.getReadOnlyText(),
+                ref: this.setRichTextNode,
                 style: this.props.style
             },
             this.renderQuillNode()
@@ -62,6 +66,11 @@ export class RichText extends Component<RichTextProps, {}> {
     }
 
     componentDidUpdate(prevProps: RichTextProps) {
+        if (this.props.recreate) {
+            this.recreateEditor(this.props);
+
+            return;
+        }
         if (prevProps.readOnly && !this.props.readOnly && this.props.readOnlyStyle !== "text") {
             this.setUpEditor(this.props);
         }
@@ -102,15 +111,17 @@ export class RichText extends Component<RichTextProps, {}> {
         this.quillNode = node;
     }
 
+    private setRichTextNode(node: HTMLElement) {
+        this.richTextNode = node;
+    }
+
     private setUpEditor(props: RichTextProps) {
         if (this.quillNode && !this.quill) {
             this.quill = new Quill(this.quillNode, {
                 modules: this.getEditorOptions(),
                 theme: props.theme
             });
-
             this.quill.on("selection-change", this.handleSelectionChange);
-
             this.updateEditor(props);
         }
     }
@@ -128,9 +139,20 @@ export class RichText extends Component<RichTextProps, {}> {
         if (this.quill) {
             this.quill.enable(!props.readOnly);
             this.quill.clipboard.dangerouslyPasteHTML(props.value);
-
             this.setEditorStyle(props);
         }
+    }
+
+    private recreateEditor(props: RichTextProps) {
+        if (this.quill && this.richTextNode) {
+            this.quill.off("selection-change", this.handleSelectionChange);
+            this.quill = undefined;
+            const toolbar = this.richTextNode.querySelector(".ql-toolbar");
+            if (toolbar) {
+                toolbar.remove();
+            }
+        }
+        this.setUpEditor(props);
     }
 
     private setEditorStyle(props: RichTextProps) {
