@@ -162,6 +162,7 @@ export class RichText extends Component<RichTextProps, {}> {
     private recreateEditor(props: RichTextProps) {
         if (this.quill && this.richTextNode) {
             this.quill.off("selection-change", this.handleSelectionChange);
+            this.quill.off("text-change", this.handleTextChange);
             this.quill = undefined;
             const toolbar = this.richTextNode.querySelector(".ql-toolbar");
             if (toolbar) {
