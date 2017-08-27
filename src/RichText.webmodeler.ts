@@ -1,9 +1,8 @@
 import { Component, createElement } from "react";
 
 import { RichText, RichTextProps } from "./components/RichText";
-import { RichTextContainerProps } from "./components/RichTextContainer";
+import RichTextContainer, { RichTextContainerProps } from "./components/RichTextContainer";
 
-import { parseStyle } from "./utils/ContainerUtils";
 import { ValidateConfigs } from "./components/ValidateConfigs";
 
 // tslint:disable-next-line class-name
@@ -18,11 +17,10 @@ export class preview extends Component<RichTextContainerProps, {}> {
         const valueAttribute = props.stringAttribute ? props.stringAttribute.split(".")[ 2 ] : "";
 
         return {
-            ... props as any,
-            className: props.class,
+            ... RichTextContainer.getPartialRichTextProps(props) as RichTextProps,
             readOnly: props.editable === "never",
             recreate: true,
-            style: parseStyle(props.style),
+            update: true,
             value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`
         };
     }

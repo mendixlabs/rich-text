@@ -25,7 +25,10 @@ export interface CommonRichTextProps {
 
 export interface RichTextProps extends CommonRichTextProps {
     className?: string;
-    onChange?: (value: string) => void;
+    onChange?: (value?: string) => void;
+    onBlur?: () => void;
+    update: boolean;
+    getQuill?: (quill: Quill.Quill) => void;
     style?: object;
 }
 
@@ -37,11 +40,13 @@ export class RichText extends Component<RichTextProps, {}> {
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
     private averageLineHeight = 1.42857; // Copied from the bootstrap <p/> element css
+    private textChanged = false;
 
     constructor(props: RichTextProps) {
         super(props);
 
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
+        this.handleTextChange = this.handleTextChange.bind(this);
         this.setQuillNode = this.setQuillNode.bind(this);
         this.setRichTextNode = this.setRichTextNode.bind(this);
     }
@@ -74,13 +79,16 @@ export class RichText extends Component<RichTextProps, {}> {
         if (prevProps.readOnly && !this.props.readOnly && this.props.readOnlyStyle !== "text") {
             this.setUpEditor(this.props);
         }
-        this.updateEditor(this.props);
+        if (this.props.update) {
+            this.updateEditor(this.props);
+        }
     }
 
     componentWillUnmount() {
         this.handleSelectionChange();
         if (this.quill) {
             this.quill.off("selection-change", this.handleSelectionChange);
+            this.quill.off("text-change", this.handleTextChange);
         }
     }
 
@@ -100,10 +108,7 @@ export class RichText extends Component<RichTextProps, {}> {
 
     private renderQuillNode(): ReactNode {
         return !(this.props.readOnly && this.props.readOnlyStyle === "text")
-            ? createElement("div", {
-                className: classNames("widget-rich-text-quill"),
-                ref: this.setQuillNode
-            })
+            ? createElement("div", { className: "widget-rich-text-quill", ref: this.setQuillNode })
             : null;
     }
 
@@ -122,15 +127,10 @@ export class RichText extends Component<RichTextProps, {}> {
                 theme: props.theme
             });
             this.quill.on("selection-change", this.handleSelectionChange);
+            this.quill.on("text-change", this.handleTextChange);
             this.updateEditor(props);
-        }
-    }
-
-    private handleSelectionChange() {
-        if (this.quill && !this.quill.hasFocus() && this.props.onChange) {
-            const value = this.quill.container.firstChild.innerHTML;
-            if (this.props.value !== value) {
-                this.props.onChange(value);
+            if (this.props.getQuill) {
+                this.props.getQuill(this.quill);
             }
         }
     }
@@ -140,6 +140,22 @@ export class RichText extends Component<RichTextProps, {}> {
             this.quill.enable(!props.readOnly);
             this.quill.clipboard.dangerouslyPasteHTML(props.value);
             this.setEditorStyle(props);
+        }
+    }
+
+    private handleTextChange() {
+        if (this.quill && this.quill.hasFocus() && this.props.onChange) {
+            const value = this.quill.root.innerHTML;
+            if (this.props.value !== value) {
+                this.props.onChange(value);
+                this.textChanged = true;
+            }
+        }
+    }
+
+    private handleSelectionChange() {
+        if (this.textChanged && this.quill && !this.quill.hasFocus() && this.props.onBlur) {
+            this.props.onBlur();
         }
     }
 
