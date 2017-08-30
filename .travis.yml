@@ -24,10 +24,8 @@ env:
   - MX_APP_NAME=texteditorwidget
   - MX_BRANCH_NAME=trunk
   - MX_PROJECT_ID=8648ccda-9281-4768-abb2-8ce61a80e2f1
-  - secure: CvE9K9XGm1GD0tTM38cHX1/OYhgvgHZTHbIs+PMGiSb4FVATN0BRLUay3IqvoohnxKcBtUbSGqCZBZ6CNRxqdcq0KRX83n+bPibD2XOipEvW6SOOiiF91qV1qTJqfbPXn+lsshZihrYAS1aBfEeqhWniVcqPlnsC20ypYBx8TI2jMMylKQfb+D8tXX2XkY+rlZcFIA0tDJ602hF29bN79mzTxh/zDO8+0DHpvghJtTFDJrWCrPUrX5vSXy+FQR3QFkhRTD7n9Y5F8OTe4WZMkhWyYj9eV6Agf1JkUZK4XT82N+3742Zzf9O/O5IeBQlWC3Vn+NqujKc6pvcui8iEH0Mm2PRGvXUxlvNLwI4sPDILO7av8TTEQY4ejrjBzwf+UJFjpBgzgTm/L8+FXsqlvqr7C3G3aHLXyCsmLF4rOU9/m5woLbOMZ4l3h0cl5YIYKCEEEQzKoyQza/yUEXm0vMGXqNI29iQXI+bu2YBB006rtOGvi8mdVJZmotuvNXmbFV6SsMPCaKX+/OIZ70zU17xdQSBrCFPLyVEhCxjR6So5KBG/EXPRq3RHtfsJsxNsxK4n1HkhocrY0snmiXwRW8YMLtBHdtU6z+uOngfogAKRD7FkdCwMYBsomP4EeyA5uXDWyT9bQcjsyi/OAJbHoEZdeL5X/aOgxUeOqPBWY68=
   - MX_ENVIRONMENT=Sandbox
   - MX_USER=ci@flockofbirds.org
-  - secure: j3t3w9myZxtMxRjkR1iuf31koyqYCTkTm2Nuvi/IiKdlV72NR4tJrx+Fb/e0TDzmx9gdGxSRpmb7rkcjjMDG1ceOmkS0nI7hZbRyXyLCd3Qm3oAvNVSvABpkkBLVd/+1aIMBg8om2h23OZzW60ZkW7i4jCIv8J/SHYbsd8A8PvgXAgTax5CG2hvmcqsFZx4i9m0lIs4XC1mHf6gOwB+0nnoK5bO8Q4x/rx9rcOPJjlZf5e96mPrIcPhdoJVYDaUFC8tBm5aiFz2Q0tkBKlm0XUPkS/KwUX/8gVsv48Ex/VyRZ7+T6SEtQeelRwjAVpsm0I6LDjze9UzzB2TG4frXBc0XAxf+ieAjmAaKnUPQXrhZkuW5Erd38HOsANxkUmMZkcQ29dtziInxirTMSyFPyEa3a6iFNglWBidTUtsmGaNN4ncuEsu+wq2wwfFNKbcveEXuJ4Fo1trPxVdCtri44X9g6FzfC8fNPAzQ/eqiaOqrsksyYqW2Qtqoz4Rgu1r1uYwyX647wyauJGlfc0u9y8wtU32BM0ekf3jtMnbHomZW4qPEsosnTE4fj/KuAaiIHExx6MhBdYr3RoZ2eCmYQz/PS5XnLzR/7K9tRUTaP0SIfhOlm0rw/eI+WOl/q9h+TVJNdNjxBunRyE0yP6Xbe1/KBRdEPvcEeklsx7KdgV0=
 deploy:
   provider: releases
   api_key:
@@ -36,5 +34,5 @@ deploy:
   file: dist/release/*
   skip_cleanup: true
   on:
-    repo: FlockOfBirds/rich-text
+    repo: $TRAVIS_REPO_SLUG
     tags: true

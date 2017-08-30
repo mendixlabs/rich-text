@@ -1,6 +1,6 @@
 import { Component, createElement } from "react";
 
-import { CommonRichTextProps, RichText, RichTextProps } from "./RichText";
+import { CommonRichTextProps, RichText } from "./RichText";
 import { ValidateConfigs } from "./ValidateConfigs";
 
 import { getValue, parseStyle } from "../utils/ContainerUtils";
@@ -27,8 +27,7 @@ export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 export default class RichTextContainer extends Component<RichTextContainerProps, RichTextState> {
     private subscriptionHandles: number[] = [];
-    private quill: Quill.Quill;
-    private update = true;
+    private updateEditor = true;
     private editorChanged = false;
 
     constructor(props: RichTextContainerProps) {
@@ -41,19 +40,24 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         this.executeOnChangeAction = this.executeOnChangeAction.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
-        this.setQuill = this.setQuill.bind(this);
     }
 
     render() {
         return createElement(ValidateConfigs, { ...this.props as RichTextContainerProps, showOnError: false },
             createElement(RichText, {
-                ... RichTextContainer.getPartialRichTextProps(this.props) as RichTextProps,
+                editorOption: this.props.editorOption,
+                theme: this.props.theme,
+                customOptions: this.props.customOptions,
+                minNumberOfLines: this.props.minNumberOfLines,
+                maxNumberOfLines: this.props.maxNumberOfLines,
+                readOnlyStyle: this.props.mxObject ? this.props.readOnlyStyle : "bordered",
+                className: this.props.class,
+                style: parseStyle(this.props.style),
                 value: this.state.value,
                 onChange: this.handleOnChange,
                 onBlur: this.executeOnChangeAction,
-                getQuill: this.setQuill,
                 readOnly: this.isReadOnly(),
-                update: this.update
+                updateEditor: this.updateEditor
             })
         );
     }
@@ -71,26 +75,9 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
     }
 
-    public static getPartialRichTextProps(props: RichTextContainerProps): Partial<RichTextProps> {
-        return {
-            editorOption: props.editorOption,
-            theme: props.theme,
-            customOptions: props.customOptions,
-            minNumberOfLines: props.minNumberOfLines,
-            maxNumberOfLines: props.maxNumberOfLines,
-            readOnlyStyle: props.mxObject ? props.readOnlyStyle : "bordered",
-            className: props.class,
-            style: parseStyle(props.style)
-        };
-    }
-
     private isReadOnly(): boolean {
         return !this.props.mxObject || this.props.editable === "never" || this.props.readOnly ||
             this.props.mxObject.isReadonlyAttr(this.props.stringAttribute);
-    }
-
-    private setQuill(quill: Quill.Quill) {
-        this.quill = quill;
     }
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
@@ -113,14 +100,14 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     private handleSubscriptions() {
         this.setState({
             value: getValue(this.props.stringAttribute, "", this.props.mxObject) as string
-        }, () => this.update = true);
+        }, () => this.updateEditor = true);
     }
 
     private handleOnChange(value: string) {
         if (!this.props.mxObject) {
             return;
         }
-        this.update = false;
+        this.updateEditor = false;
         this.editorChanged = true;
         this.props.mxObject.set(this.props.stringAttribute, value);
     }

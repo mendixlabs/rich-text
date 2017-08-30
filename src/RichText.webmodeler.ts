@@ -1,9 +1,10 @@
 import { Component, createElement } from "react";
 
 import { RichText, RichTextProps } from "./components/RichText";
-import RichTextContainer, { RichTextContainerProps } from "./components/RichTextContainer";
+import { RichTextContainerProps } from "./components/RichTextContainer";
 
 import { ValidateConfigs } from "./components/ValidateConfigs";
+import { parseStyle } from "./utils/ContainerUtils";
 
 // tslint:disable-next-line class-name
 export class preview extends Component<RichTextContainerProps, {}> {
@@ -17,10 +18,17 @@ export class preview extends Component<RichTextContainerProps, {}> {
         const valueAttribute = props.stringAttribute ? props.stringAttribute.split(".")[ 2 ] : "";
 
         return {
-            ... RichTextContainer.getPartialRichTextProps(props) as RichTextProps,
+            editorOption: props.editorOption,
+            theme: props.theme,
+            customOptions: props.customOptions,
+            minNumberOfLines: props.minNumberOfLines,
+            maxNumberOfLines: props.maxNumberOfLines,
+            readOnlyStyle: props.mxObject ? props.readOnlyStyle : "bordered",
+            className: props.class,
+            style: parseStyle(props.style),
             readOnly: props.editable === "never",
             recreate: true,
-            update: true,
+            updateEditor: true,
             value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`
         };
     }

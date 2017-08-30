@@ -25,10 +25,9 @@ export interface CommonRichTextProps {
 
 export interface RichTextProps extends CommonRichTextProps {
     className?: string;
-    onChange?: (value?: string) => void;
+    onChange?: (value: string) => void;
     onBlur?: () => void;
-    update: boolean;
-    getQuill?: (quill: Quill.Quill) => void;
+    updateEditor: boolean; // controls whether the Quill editor should be updated with the prop.value or not
     style?: object;
 }
 
@@ -79,7 +78,7 @@ export class RichText extends Component<RichTextProps, {}> {
         if (prevProps.readOnly && !this.props.readOnly && this.props.readOnlyStyle !== "text") {
             this.setUpEditor(this.props);
         }
-        if (this.props.update) {
+        if (this.props.updateEditor) {
             this.updateEditor(this.props);
         }
     }
@@ -126,12 +125,9 @@ export class RichText extends Component<RichTextProps, {}> {
                 modules: this.getEditorOptions(),
                 theme: props.theme
             });
+            this.updateEditor(props);
             this.quill.on("selection-change", this.handleSelectionChange);
             this.quill.on("text-change", this.handleTextChange);
-            this.updateEditor(props);
-            if (this.props.getQuill) {
-                this.props.getQuill(this.quill);
-            }
         }
     }
 

@@ -16,7 +16,7 @@ describe("RichText", () => {
         readOnly: false,
         readOnlyStyle: "bordered",
         theme: "snow",
-        update: true,
+        updateEditor: true,
         value: "<p>Rich Text</p>"
     };
 
