@@ -28,8 +28,7 @@ env:
   - MX_USER=ci@flockofbirds.org
 deploy:
   provider: releases
-  api_key:
-    secure: jkZxWr+Crfkvth5sYDuX3r/TAjGW4YTddRe41jHu9Znubo2wM7i0qAK3ByoWEQMJdyFZbYhNQVXV5JpsXH+7/NlNkOHb7SLPqrWhVGsBNSUjzWXXrJp6TJQlc1PMh/DwGxWG/Q6TQ1SyHVTAEDoi+VDXD4jV1d5pGNXrA7D/ShN5eLGs7sktl9KhBAFKfABkBGHnz1QLw8AFvtLGI7iSOVMpOhbSAxLj20NYR+cBhgx7DPGJ5Cnp5Huhz7ky75WPtdd79H0bWCZFyE01BuDnsm5Bp/W87Pg9vsIaD1WWdfdrzucxFVSaKsjC42I5/ILretlPl0Y+UO/Km3MZIch6YfIB+p7TrIn4R6qXTKdnFtW40R0ziu2UpcFCW2KV0P0rOZojPs9u/r2pxJdz/b0UDQP5hMwJoj/0R2V9VLHs24kUSystmu1wKSJVC9j74RhZJxVzO/SAUtfULHqLqINrd9ewcct163KzTq4blVDHn/5F/2Lj5r/Gkn3Qp9tdjPBwntVt46Z+tFK2fuwZ6RNkyHJVsQcyu0OS8YYxLHW1vAmK7qiwANcywn2tg7Q8KflZE04yqh3Buv1x9cLoS5BiUncS+YXuPH0M/u8pUR/fc6EEofo0PhYlndn2/xrnniunD+VYcjtD2aMjCSiHz2wmGLQGT5VOqL0xblDcxQASVvg=
+  api_key: $GITHUB_KEY
   file_glob: true
   file: dist/release/*
   skip_cleanup: true
