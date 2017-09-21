@@ -19,23 +19,21 @@ export interface RichTextContainerProps extends WrapperProps, CommonRichTextProp
     onChangeMicroflow: string;
 }
 
-interface RichTextState {
+interface RichTextContainerState {
     value: string;
 }
 
 export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
-export default class RichTextContainer extends Component<RichTextContainerProps, RichTextState> {
+export default class RichTextContainer extends Component<RichTextContainerProps, RichTextContainerState> {
     private subscriptionHandles: number[] = [];
     private updateEditor = true;
-    private editorChanged = false;
+    private editorChanged: boolean;
 
     constructor(props: RichTextContainerProps) {
         super(props);
 
-        this.state = {
-            value: getValue(props.stringAttribute, "", props.mxObject) as string
-        };
+        this.state = { value: getValue(props.stringAttribute, "", props.mxObject) as string };
         this.handleOnChange = this.handleOnChange.bind(this);
         this.executeOnChangeAction = this.executeOnChangeAction.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
@@ -100,14 +98,13 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     private handleSubscriptions() {
         this.setState({
             value: getValue(this.props.stringAttribute, "", this.props.mxObject) as string
-        }, () => this.updateEditor = true);
+        });
     }
 
     private handleOnChange(value: string) {
         if (!this.props.mxObject) {
             return;
         }
-        this.updateEditor = false;
         this.editorChanged = true;
         this.props.mxObject.set(this.props.stringAttribute, value);
     }
@@ -122,6 +119,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     private onFormSubmit(onSuccess: () => void) {
         if (this.editorChanged) {
             this.executeOnChangeAction();
+            this.editorChanged = false;
         }
         onSuccess();
     }

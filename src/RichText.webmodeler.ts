@@ -29,7 +29,9 @@ export class preview extends Component<RichTextContainerProps, {}> {
             readOnly: props.editable === "never",
             recreate: true,
             updateEditor: true,
-            value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`
+            value: `<p>${valueAttribute ? `[${valueAttribute}]` : props.stringAttribute}</p>`,
+            onChange: value => value,
+            onBlur: () => null
         };
     }
 }

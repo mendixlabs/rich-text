@@ -25,8 +25,8 @@ export interface CommonRichTextProps {
 
 export interface RichTextProps extends CommonRichTextProps {
     className?: string;
-    onChange?: (value: string) => void;
-    onBlur?: () => void;
+    onChange: (value: string) => void;
+    onBlur: () => void;
     updateEditor: boolean; // controls whether the Quill editor should be updated with the prop.value or not
     style?: object;
 }
@@ -40,6 +40,7 @@ export class RichText extends Component<RichTextProps, {}> {
     private quill?: Quill.Quill;
     private averageLineHeight = 1.42857; // Copied from the bootstrap <p/> element css
     private textChanged = false;
+    private undoDefault = "<p><br></p>"; // Text left in editor when ctrl + z clears all content
 
     constructor(props: RichTextProps) {
         super(props);
@@ -78,7 +79,7 @@ export class RichText extends Component<RichTextProps, {}> {
         if (prevProps.readOnly && !this.props.readOnly && this.props.readOnlyStyle !== "text") {
             this.setUpEditor(this.props);
         }
-        if (this.props.updateEditor) {
+        if (this.quill && this.props.value !== this.quill.root.innerHTML) {
             this.updateEditor(this.props);
         }
     }
@@ -140,8 +141,8 @@ export class RichText extends Component<RichTextProps, {}> {
     }
 
     private handleTextChange() {
-        if (this.quill && this.quill.hasFocus() && this.props.onChange) {
-            const value = this.quill.root.innerHTML;
+        if (this.quill) {
+            const value = this.quill.root.innerHTML !== this.undoDefault ? this.quill.root.innerHTML : "";
             if (this.props.value !== value) {
                 this.props.onChange(value);
                 this.textChanged = true;
@@ -150,8 +151,9 @@ export class RichText extends Component<RichTextProps, {}> {
     }
 
     private handleSelectionChange() {
-        if (this.textChanged && this.quill && !this.quill.hasFocus() && this.props.onBlur) {
+        if (this.textChanged && this.quill && !this.quill.hasFocus()) {
             this.props.onBlur();
+            this.textChanged = false;
         }
     }
 
