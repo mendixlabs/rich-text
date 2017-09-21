@@ -18,11 +18,13 @@ Rich inline or toolbar text editing
 * Ctrl + U: Underline
 * Ctrl + Z: Undo
 * Ctrl + Y: Redo
+* Ctrl + C: Copy
+* Ctrl + V: Paste
 * -, space : start list
 * tab: not functional, go to next input field
 
 ## Dependencies
-Mendix 7.4
+Mendix 7.5.1
 
 ## Demo project
 http://texteditorwidget.mxapps.io
