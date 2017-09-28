@@ -37,6 +37,9 @@ Place the widget in a data view, list view or template grid with a data source t
 ## Issues, suggestions and feature requests
 We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/rich-text/issues
 
+### Known issues
+Only partially compatible with Mendix 7.6 due to a known Mendix bug.
+
 ## Development
 Prerequisite: Install git, node package manager, webpack CLI, grunt CLI, Karma CLI
 

@@ -65,7 +65,6 @@ export class RichText extends Component<RichTextProps, {}> {
             this.renderQuillNode()
         );
     }
-
     componentDidMount() {
         this.setUpEditor(this.props);
     }
@@ -121,7 +120,7 @@ export class RichText extends Component<RichTextProps, {}> {
     }
 
     private setUpEditor(props: RichTextProps) {
-        if (this.quillNode && !this.quill) {
+        if (this.quillNode && !this.quill && this.richTextNode) {
             this.quill = new Quill(this.quillNode, {
                 modules: this.getEditorOptions(),
                 theme: props.theme
@@ -129,6 +128,11 @@ export class RichText extends Component<RichTextProps, {}> {
             this.updateEditor(props);
             this.quill.on("selection-change", this.handleSelectionChange);
             this.quill.on("text-change", this.handleTextChange);
+            const toolbar = this.richTextNode.querySelector(".ql-toolbar");
+            if (toolbar) {
+                // required to disable editor blur events when the toolbar is clicked
+                toolbar.addEventListener("mousedown", event => event.preventDefault());
+            }
         }
     }
 
