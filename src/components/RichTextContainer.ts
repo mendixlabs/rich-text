@@ -27,8 +27,7 @@ export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 
 export default class RichTextContainer extends Component<RichTextContainerProps, RichTextContainerState> {
     private subscriptionHandles: number[] = [];
-    private updateEditor = true;
-    private editorChanged: boolean;
+    private defaultValue: string | null;
 
     constructor(props: RichTextContainerProps) {
         super(props);
@@ -54,8 +53,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 value: this.state.value,
                 onChange: this.handleOnChange,
                 onBlur: this.executeOnChangeAction,
-                readOnly: this.isReadOnly(),
-                updateEditor: this.updateEditor
+                readOnly: this.isReadOnly()
             })
         );
     }
@@ -63,9 +61,8 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     componentWillReceiveProps(newProps: RichTextContainerProps) {
         if (newProps.mxObject !== this.props.mxObject) {
             this.resetSubscriptions(newProps.mxObject);
-            this.setState({
-                value: getValue(newProps.stringAttribute, "", newProps.mxObject) as string
-            });
+            this.defaultValue = getValue(newProps.stringAttribute, "", newProps.mxObject) as string;
+            this.setState({ value: this.defaultValue });
         }
     }
 
@@ -105,21 +102,19 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         if (!this.props.mxObject) {
             return;
         }
-        this.editorChanged = true;
         this.props.mxObject.set(this.props.stringAttribute, value);
     }
 
     private executeOnChangeAction() {
-        if (this.props.mxObject && this.editorChanged) {
+        if (this.props.mxObject && this.state.value !== this.defaultValue) {
             this.executeAction(this.props.mxObject, this.props.onChangeMicroflow);
-            this.editorChanged = false;
+            this.defaultValue = this.state.value;
         }
     }
 
     private onFormSubmit(onSuccess: () => void) {
-        if (this.editorChanged) {
+        if (this.state.value !== this.defaultValue) {
             this.executeOnChangeAction();
-            this.editorChanged = false;
         }
         onSuccess();
     }

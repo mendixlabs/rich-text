@@ -27,7 +27,6 @@ export interface RichTextProps extends CommonRichTextProps {
     className?: string;
     onChange: (value: string) => void;
     onBlur: () => void;
-    updateEditor: boolean; // controls whether the Quill editor should be updated with the prop.value or not
     style?: object;
 }
 
@@ -65,6 +64,7 @@ export class RichText extends Component<RichTextProps, {}> {
             this.renderQuillNode()
         );
     }
+
     componentDidMount() {
         this.setUpEditor(this.props);
     }
@@ -120,7 +120,7 @@ export class RichText extends Component<RichTextProps, {}> {
     }
 
     private setUpEditor(props: RichTextProps) {
-        if (this.quillNode && !this.quill && this.richTextNode) {
+        if (this.quillNode && !this.quill) {
             this.quill = new Quill(this.quillNode, {
                 modules: this.getEditorOptions(),
                 theme: props.theme
@@ -128,7 +128,7 @@ export class RichText extends Component<RichTextProps, {}> {
             this.updateEditor(props);
             this.quill.on("selection-change", this.handleSelectionChange);
             this.quill.on("text-change", this.handleTextChange);
-            const toolbar = this.richTextNode.querySelector(".ql-toolbar");
+            const toolbar = this.richTextNode && this.richTextNode.querySelector(".ql-toolbar");
             if (toolbar) {
                 // required to disable editor blur events when the toolbar is clicked
                 toolbar.addEventListener("mousedown", event => event.preventDefault());
