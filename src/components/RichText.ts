@@ -21,6 +21,7 @@ export interface CommonRichTextProps {
     minNumberOfLines: number;
     maxNumberOfLines: number;
     recreate?: boolean;
+    validationMessage?: string;
 }
 
 export interface RichTextProps extends CommonRichTextProps {
@@ -61,7 +62,8 @@ export class RichText extends Component<RichTextProps, {}> {
                 ref: this.setRichTextNode,
                 style: this.props.style
             },
-            this.renderQuillNode()
+            this.renderQuillNode(),
+            this.renderValidation()
         );
     }
 
@@ -109,6 +111,14 @@ export class RichText extends Component<RichTextProps, {}> {
         return !(this.props.readOnly && this.props.readOnlyStyle === "text")
             ? createElement("div", { className: "widget-rich-text-quill", ref: this.setQuillNode })
             : null;
+    }
+
+    private renderValidation(): ReactNode {
+        if (this.props.validationMessage) {
+            return createElement("span", {
+                className: "widget-rich-text-validation"
+            }, this.props.validationMessage);
+        }
     }
 
     private setQuillNode(node: HTMLElement) {

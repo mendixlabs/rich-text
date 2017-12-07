@@ -20,6 +20,7 @@ export interface RichTextContainerProps extends WrapperProps, CommonRichTextProp
 }
 
 interface RichTextContainerState {
+    validationMessage: string;
     value: string;
 }
 
@@ -32,11 +33,16 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     constructor(props: RichTextContainerProps) {
         super(props);
 
-        this.state = { value: getValue(props.stringAttribute, "", props.mxObject) as string };
+        this.state = {
+            validationMessage: "",
+            value: getValue(props.stringAttribute, "", props.mxObject) as string
+        };
+
         this.handleOnChange = this.handleOnChange.bind(this);
         this.executeOnChangeAction = this.executeOnChangeAction.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.handleValidations = this.handleValidations.bind(this);
     }
 
     render() {
@@ -53,7 +59,8 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 value: this.state.value,
                 onChange: this.handleOnChange,
                 onBlur: this.executeOnChangeAction,
-                readOnly: this.isReadOnly()
+                readOnly: this.isReadOnly(),
+                validationMessage: this.state.validationMessage
             })
         );
     }
@@ -85,7 +92,12 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             };
             this.subscriptionHandles = [
                 window.mx.data.subscribe(commonOptions),
-                window.mx.data.subscribe({ attr: this.props.stringAttribute, ...commonOptions })
+                window.mx.data.subscribe({ attr: this.props.stringAttribute, ...commonOptions }),
+                window.mx.data.subscribe({
+                    callback: this.handleValidations,
+                    guid: mxObject.getGuid(),
+                    val: true
+                })
             ];
 
             this.props.mxform.listen("submit", this.onFormSubmit);
@@ -96,6 +108,14 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         this.setState({
             value: getValue(this.props.stringAttribute, "", this.props.mxObject) as string
         });
+    }
+
+    private handleValidations(validations: mendix.lib.ObjectValidation[]) {
+        const validationMessage = validations[0].getErrorReason(this.props.stringAttribute);
+        validations[0].removeAttribute(this.props.stringAttribute);
+        if (validationMessage) {
+            this.setState({ validationMessage });
+        }
     }
 
     private handleOnChange(value: string) {

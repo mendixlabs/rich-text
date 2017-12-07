@@ -43,6 +43,22 @@ describe("RichText", () => {
             expect(editorSpy).toHaveBeenCalled();
         });
 
+        it("renders a quill editor with a validation message", () => {
+            const richTextProps: RichTextProps = {
+                ...defaultProps,
+                validationMessage: "Error message"
+            };
+
+            textEditor = shallowRenderTextEditor(richTextProps);
+
+            expect(textEditor).toBeElement(
+                createElement("div", { className: "widget-rich-text disabled-bordered" },
+                    createElement("div", { className: "widget-rich-text-quill" }),
+                    createElement("span", { className: "widget-rich-text-validation" }, richTextProps.validationMessage)
+                )
+            );
+        });
+
         it("updates when the editor value changes", () => {
             textEditor = shallowRenderTextEditor(defaultProps); // extract into a beforeEach
             const textEditorInstance = textEditor.instance() as any;
