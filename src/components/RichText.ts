@@ -34,7 +34,7 @@ export interface RichTextProps extends CommonRichTextProps {
 export type EditorOption = "basic" | "extended" | "custom";
 export type Theme = "snow" | "bubble";
 
-export class RichText extends Component<RichTextProps, {}> {
+export class RichText extends Component<RichTextProps> {
     private richTextNode?: HTMLElement;
     private quillNode?: HTMLElement;
     private quill?: Quill.Quill;
