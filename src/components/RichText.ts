@@ -1,6 +1,7 @@
 import { Component, ReactNode, createElement } from "react";
 import * as classNames from "classnames";
 
+import { Alert } from "./Alert";
 import * as Quill from "quill";
 import * as sanitizeHtml from "sanitize-html";
 
@@ -21,7 +22,7 @@ export interface CommonRichTextProps {
     minNumberOfLines: number;
     maxNumberOfLines: number;
     recreate?: boolean;
-    validationMessage?: string;
+    alertMessage?: string;
 }
 
 export interface RichTextProps extends CommonRichTextProps {
@@ -57,13 +58,14 @@ export class RichText extends Component<RichTextProps> {
                 className: classNames("widget-rich-text", this.props.className, {
                     [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly,
                     "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions.length === 0
-                }),
+                })
+            },
+            createElement("div", {
                 dangerouslySetInnerHTML: this.getReadOnlyText(),
                 ref: this.setRichTextNode,
                 style: this.props.style
-            },
-            this.renderQuillNode(),
-            this.renderValidation()
+            }, this.renderQuillNode()),
+            this.renderAlertMessage()
         );
     }
 
@@ -113,12 +115,10 @@ export class RichText extends Component<RichTextProps> {
             : null;
     }
 
-    private renderValidation(): ReactNode {
-        if (this.props.validationMessage) {
-            return createElement("span", {
-                className: "widget-rich-text-validation"
-            }, this.props.validationMessage);
-        }
+    private renderAlertMessage(): ReactNode {
+        return !this.props.readOnly
+            ? createElement(Alert, { message: this.props.alertMessage })
+            : null;
     }
 
     private setQuillNode(node: HTMLElement) {

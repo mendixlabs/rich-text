@@ -20,7 +20,7 @@ export interface RichTextContainerProps extends WrapperProps, CommonRichTextProp
 }
 
 interface RichTextContainerState {
-    validationMessage: string;
+    alertMessage: string;
     value: string;
 }
 
@@ -34,7 +34,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         super(props);
 
         this.state = {
-            validationMessage: "",
+            alertMessage: "",
             value: getValue(props.stringAttribute, "", props.mxObject) as string
         };
 
@@ -60,7 +60,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 onChange: this.handleOnChange,
                 onBlur: this.executeOnChangeAction,
                 readOnly: this.isReadOnly(),
-                validationMessage: this.state.validationMessage
+                alertMessage: this.state.alertMessage
             })
         );
     }
@@ -111,10 +111,10 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     }
 
     private handleValidations(validations: mendix.lib.ObjectValidation[]) {
-        const validationMessage = validations[0].getErrorReason(this.props.stringAttribute);
+        const alertMessage = validations[0].getErrorReason(this.props.stringAttribute);
         validations[0].removeAttribute(this.props.stringAttribute);
-        if (validationMessage) {
-            this.setState({ validationMessage });
+        if (alertMessage) {
+            this.setState({ alertMessage });
         }
     }
 
