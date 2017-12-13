@@ -1,7 +1,10 @@
 import { ShallowWrapper, mount, shallow } from "enzyme";
 import { createElement } from "react";
 
+import * as classNames from "classnames";
+
 import { RichText, RichTextProps } from "../RichText";
+import { Alert } from "../Alert";
 
 describe("RichText", () => {
     const shallowRenderTextEditor = (props: RichTextProps) => shallow(createElement(RichText, props));
@@ -25,8 +28,10 @@ describe("RichText", () => {
             textEditor = shallowRenderTextEditor(defaultProps);
 
             expect(textEditor).toBeElement(
-                createElement("div", { className: "widget-rich-text disabled-bordered" },
-                    createElement("div", { className: "widget-rich-text-quill" })
+                createElement("div", { className: classNames("widget-rich-text disabled-bordered") },
+                    createElement("div", {},
+                        createElement("div", { className: "widget-rich-text-quill" })
+                    )
                 )
             );
         });
@@ -43,22 +48,6 @@ describe("RichText", () => {
             expect(editorSpy).toHaveBeenCalled();
         });
 
-        it("renders a quill editor with a validation message", () => {
-            const richTextProps: RichTextProps = {
-                ...defaultProps,
-                validationMessage: "Error message"
-            };
-
-            textEditor = shallowRenderTextEditor(richTextProps);
-
-            expect(textEditor).toBeElement(
-                createElement("div", { className: "widget-rich-text disabled-bordered" },
-                    createElement("div", { className: "widget-rich-text-quill" }),
-                    createElement("span", { className: "widget-rich-text-validation" }, richTextProps.validationMessage)
-                )
-            );
-        });
-
         it("updates when the editor value changes", () => {
             textEditor = shallowRenderTextEditor(defaultProps); // extract into a beforeEach
             const textEditorInstance = textEditor.instance() as any;
@@ -72,6 +61,24 @@ describe("RichText", () => {
             textEditorInstance.componentDidUpdate(defaultProps);
 
             expect(editorSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it("renders a quill editor with an alert message", () => {
+            const richTextProps: RichTextProps = {
+                ...defaultProps,
+                alertMessage: "Error message",
+                readOnly: false
+            };
+
+            textEditor = shallowRenderTextEditor(richTextProps);
+            expect(textEditor).toBeElement(
+                createElement("div", { className: "widget-rich-text" },
+                    createElement("div", { dangerouslySetInnerHTML: undefined, style: undefined },
+                        createElement("div", { className: "widget-rich-text-quill" })
+                    ),
+                    createElement(Alert, { message: richTextProps.alertMessage })
+                )
+            );
         });
 
         describe("with editor mode set to", () => {
@@ -116,10 +123,8 @@ describe("RichText", () => {
             textEditor = shallowRenderTextEditor(defaultProps);
 
             expect(textEditor).toBeElement(
-                createElement("div", {
-                    className: "widget-rich-text disabled-text",
-                    dangerouslySetInnerHTML: { __html: defaultProps.value }
-                })
+                createElement("div", { className: "widget-rich-text disabled-text" },
+                    createElement("div", { dangerouslySetInnerHTML: { __html: defaultProps.value } }))
             );
         });
 
@@ -141,9 +146,10 @@ describe("RichText", () => {
     it("destroys and recreates the editor on update when configured to recreate", () => {
         defaultProps.recreate = true;
         const richText = fullRenderTextEditor(defaultProps);
-        const editorSpy = spyOn(richText.instance() as any, "setUpEditor").and.callThrough();
+        const richTextInstance = richText.instance() as any;
+        const editorSpy = spyOn(richTextInstance, "setUpEditor").and.callThrough();
 
-        richText.update();
+        richTextInstance.componentDidUpdate();
         expect(editorSpy).toHaveBeenCalled();
     });
 
