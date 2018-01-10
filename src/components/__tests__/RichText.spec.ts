@@ -72,7 +72,7 @@ describe("RichText", () => {
 
             textEditor = shallowRenderTextEditor(richTextProps);
             expect(textEditor).toBeElement(
-                createElement("div", { className: "widget-rich-text" },
+                createElement("div", { className: "widget-rich-text has-error" },
                     createElement("div", { dangerouslySetInnerHTML: undefined, style: undefined },
                         createElement("div", { className: "widget-rich-text-quill" })
                     ),
