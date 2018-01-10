@@ -21,9 +21,10 @@ describe("RichText", () => {
         HomePage.richText1.waitForVisible();
         HomePage.richText1.click();
         HomePage.richText1.keys(plainValue);
+        const updatedValue = HomePage.richText1.getHTML(false);
         HomePage.textArea2.click();
 
         const content = HomePage.textArea2.getValue();
-        expect(content).toContain(plainValue);
+        expect(content).toContain(updatedValue);
     });
 });
