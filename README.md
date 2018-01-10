@@ -24,7 +24,7 @@ Rich inline or toolbar text editing
 * tab: not functional, go to next input field
 
 ## Dependencies
-Mendix 7.5.1
+Mendix 7.9
 
 ## Demo project
 http://texteditorwidget.mxapps.io
@@ -36,12 +36,6 @@ Place the widget in a data view, list view or template grid with a data source t
 
 ## Issues, suggestions and feature requests
 We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/rich-text/issues
-
-### Known issues
-Due to a bug in Mendix 7.6, the React lifecycle method componentWillUnmount is no longer called. 
-This perpetuates events even after the widget has been destroyed, causing a noticeable effect on subsequent editor performance.
-It also prevents the onChange action from being called when a user navigates to a different page.
-This issue shall be fixed in Mendix 7.8
 
 ## Development
 Prerequisite: Install git, node package manager, webpack CLI, grunt CLI, Karma CLI
