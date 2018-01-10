@@ -80,7 +80,6 @@
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "react": "^16.2.0",
-    "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
     "remap-istanbul": "^0.9.0",

@@ -29,6 +29,7 @@ export type ReadOnlyStyle = "bordered" | "text" | "borderedToolbar";
 export default class RichTextContainer extends Component<RichTextContainerProps, RichTextContainerState> {
     private subscriptionHandles: number[] = [];
     private defaultValue: string | null;
+    private isEditing = false;
 
     constructor(props: RichTextContainerProps) {
         super(props);
@@ -37,7 +38,9 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             alertMessage: "",
             value: getValue(props.stringAttribute, "", props.mxObject) as string
         };
+    }
 
+    componentWillMount() {
         this.handleOnChange = this.handleOnChange.bind(this);
         this.executeOnChangeAction = this.executeOnChangeAction.bind(this);
         this.handleSubscriptions = this.handleSubscriptions.bind(this);
@@ -84,6 +87,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
+        this.subscriptionHandles = [];
 
         if (mxObject) {
             const commonOptions = {
@@ -105,9 +109,10 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     }
 
     private handleSubscriptions() {
-        this.setState({
-            value: getValue(this.props.stringAttribute, "", this.props.mxObject) as string
-        });
+        const value = getValue(this.props.stringAttribute, "", this.props.mxObject) as string;
+        if (value !== this.state.value) {
+            this.setState({ value });
+        }
     }
 
     private handleValidations(validations: mendix.lib.ObjectValidation[]) {
@@ -122,6 +127,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         if (!this.props.mxObject) {
             return;
         }
+        this.isEditing = true;
         this.props.mxObject.set(this.props.stringAttribute, value);
     }
 
@@ -130,10 +136,13 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             this.executeAction(this.props.mxObject, this.props.onChangeMicroflow);
             this.defaultValue = this.state.value;
         }
+        if (this.isEditing) {
+            this.isEditing = false;
+        }
     }
 
     private onFormSubmit(onSuccess: () => void) {
-        if (this.state.value !== this.defaultValue) {
+        if (this.isEditing) {
             this.executeOnChangeAction();
         }
         onSuccess();

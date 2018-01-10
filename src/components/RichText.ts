@@ -43,9 +43,7 @@ export class RichText extends Component<RichTextProps> {
     private textChanged = false;
     private undoDefault = "<p><br></p>"; // Text left in editor when ctrl + z clears all content
 
-    constructor(props: RichTextProps) {
-        super(props);
-
+    componentWillMount() {
         this.handleSelectionChange = this.handleSelectionChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.setQuillNode = this.setQuillNode.bind(this);
@@ -149,7 +147,7 @@ export class RichText extends Component<RichTextProps> {
     private updateEditor(props: RichTextProps) {
         if (this.quill) {
             this.quill.enable(!props.readOnly);
-            this.quill.clipboard.dangerouslyPasteHTML(props.value);
+            this.quill.clipboard.dangerouslyPasteHTML(props.value, "silent");
             this.setEditorStyle(props);
         }
     }
