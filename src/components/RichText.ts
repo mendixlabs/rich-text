@@ -54,6 +54,7 @@ export class RichText extends Component<RichTextProps> {
         return createElement("div",
             {
                 className: classNames("widget-rich-text", this.props.className, {
+                    "has-error": !!this.props.alertMessage,
                     [ RichText.getReadOnlyClasses(this.props.readOnlyStyle) ]: this.props.readOnly,
                     "buttons-hidden": this.props.editorOption === "custom" && this.props.customOptions.length === 0
                 })

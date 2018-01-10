@@ -111,7 +111,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
     private handleSubscriptions() {
         const value = getValue(this.props.stringAttribute, "", this.props.mxObject) as string;
         if (value !== this.state.value) {
-            this.setState({ value });
+            this.setState({ value, alertMessage: "" });
         }
     }
 
