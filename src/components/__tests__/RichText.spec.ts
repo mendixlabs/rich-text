@@ -29,7 +29,7 @@ describe("RichText", () => {
 
             expect(textEditor).toBeElement(
                 createElement("div", { className: classNames("widget-rich-text disabled-bordered") },
-                    createElement("div", {},
+                    createElement("div", { style: { whiteSpace: "pre-wrap" } },
                         createElement("div", { className: "widget-rich-text-quill" })
                     )
                 )
@@ -73,7 +73,10 @@ describe("RichText", () => {
             textEditor = shallowRenderTextEditor(richTextProps);
             expect(textEditor).toBeElement(
                 createElement("div", { className: "widget-rich-text has-error" },
-                    createElement("div", { dangerouslySetInnerHTML: undefined, style: undefined },
+                    createElement("div", {
+                            style: { whiteSpace: "pre-wrap" },
+                            dangerouslySetInnerHTML: undefined
+                        },
                         createElement("div", { className: "widget-rich-text-quill" })
                     ),
                     createElement(Alert, { message: richTextProps.alertMessage })
@@ -123,8 +126,13 @@ describe("RichText", () => {
             textEditor = shallowRenderTextEditor(defaultProps);
 
             expect(textEditor).toBeElement(
-                createElement("div", { className: "widget-rich-text disabled-text" },
-                    createElement("div", { dangerouslySetInnerHTML: { __html: defaultProps.value } }))
+                createElement("div", { className: "widget-rich-text disabled-text ql-snow" },
+                    createElement("div", {
+                        className: "ql-editor",
+                        style: { whiteSpace: "pre-wrap" },
+                        dangerouslySetInnerHTML: { __html: defaultProps.value }
+                    })
+                )
             );
         });
 

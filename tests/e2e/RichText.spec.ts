@@ -10,6 +10,7 @@ describe("RichText", () => {
         HomePage.textArea2.waitForVisible();
         HomePage.textArea2.click();
         HomePage.textArea2.setValue(testValue);
+        HomePage.textArea3.waitForVisible();
         HomePage.textArea3.click();
 
         const content = HomePage.richText1.getHTML(false);
