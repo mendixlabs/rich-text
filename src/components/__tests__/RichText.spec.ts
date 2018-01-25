@@ -15,6 +15,7 @@ describe("RichText", () => {
         editorOption: "basic",
         maxNumberOfLines: 10,
         minNumberOfLines: 10,
+        sanitizeContent: false,
         onChange: jasmine.any(Function),
         onBlur: jasmine.any(Function),
         readOnly: false,

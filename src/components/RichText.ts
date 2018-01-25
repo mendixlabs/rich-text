@@ -15,6 +15,7 @@ import "../ui/RichText.scss";
 export interface CommonRichTextProps {
     editorOption: EditorOption;
     value: string;
+    sanitizeContent: boolean;
     readOnly: boolean;
     readOnlyStyle: ReadOnlyStyle;
     theme: Theme;
@@ -111,14 +112,17 @@ export class RichText extends Component<RichTextProps> {
     }
 
     private sanitize(value: string): string {
-        return sanitizeHtml(value, {
-            allowedTags: [ "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "a", "ul", "li", "ol", "s", "u", "em", "pre", "strong", "blockquote", "span" ],
-            allowedAttributes: {
-                "*": [ "class", "style" ],
-                "a": [ "href", "name", "target" ]
-            },
-            allowedSchemes: [ "http", "https", "ftp", "mailto" ]
-        });
+        if (this.props.sanitizeContent) {
+            return sanitizeHtml(value, {
+                allowedTags: [ "h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "a", "ul", "li", "ol", "s", "u", "em", "pre", "strong", "blockquote", "span" ],
+                allowedAttributes: {
+                    "*": [ "class", "style" ],
+                    "a": [ "href", "name", "target" ]
+                },
+                allowedSchemes: [ "http", "https", "ftp", "mailto" ]
+            });
+        }
+        return value;
     }
 
     private renderQuillNode(): ReactNode {

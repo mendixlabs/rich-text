@@ -15,6 +15,7 @@ interface WrapperProps {
 
 export interface RichTextContainerProps extends WrapperProps, CommonRichTextProps {
     stringAttribute: string;
+    sanitizeContent: boolean;
     editable: "default" | "never";
     onChangeMicroflow: string;
 }
@@ -59,6 +60,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
                 readOnlyStyle: this.props.mxObject ? this.props.readOnlyStyle : "bordered",
                 className: this.props.class,
                 style: parseStyle(this.props.style),
+                sanitizeContent: this.props.sanitizeContent,
                 value: this.state.value,
                 onChange: this.handleOnChange,
                 onBlur: this.executeOnChangeAction,

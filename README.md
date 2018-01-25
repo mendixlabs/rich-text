@@ -44,6 +44,9 @@ Supports:
    * `a` tag: href, name, target
  * Schemes: http, https, ftp, mailto
 
+**Please note**: To be fully secure, all user HTML input should be sanitized on the server side too. This could be done with the `XSSSanitize` action found in the Community Commons https://appstore.home.mendix.com/link/app/170/
+When the option 'Sanitize content' is set to 'false' server side sanitating is required before showing any HTML content.
+
 ## Issues, suggestions and feature requests
 We are actively maintaining this widget, please report any issues or suggestion for improvement at https://github.com/mendixlabs/rich-text/issues
 
