@@ -22,7 +22,8 @@ export interface RichTextContainerProps extends WrapperProps, CommonRichTextProp
 }
 
 interface Nanoflow {
-    nanoflow?: object[];
+    nanoflow: object[];
+    paramsSpec: { Progress: string };
 }
 
 interface RichTextContainerState {
