@@ -175,7 +175,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
             context.setContext(mxObject.getEntity(), mxObject.getGuid());
             window.mx.data.callNanoflow({
                 context,
-                error: error => window.mx.ui.error(`Error while executing nanoflow: + ${onChangeNanoflow} : ${error.message}`),
+                error: error => window.mx.ui.error(`Error while executing the on change nanoflow: ${error.message}`),
                 nanoflow: onChangeNanoflow,
                 origin: mxform
             });
