@@ -155,6 +155,11 @@ export class RichText extends Component<RichTextProps> {
             this.updateEditor(props);
             this.quill.on("selection-change", this.handleSelectionChange);
             this.quill.on("text-change", this.handleTextChange);
+            this.quillNode.addEventListener("keydown", function(event){
+                if (event.which === 19) { // tab key
+                    event.stopPropagation(); 
+                } 
+            });
             const toolbar = this.richTextNode && this.richTextNode.querySelector(".ql-toolbar");
             const editor = this.richTextNode && this.richTextNode.querySelector(".ql-editor");
             if (toolbar) {
