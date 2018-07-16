@@ -19,6 +19,7 @@
     "strict": true,
     "strictFunctionTypes": false,
     "skipLibCheck": false,
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },

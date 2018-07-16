@@ -24,6 +24,7 @@ export interface CommonRichTextProps {
     maxNumberOfLines: number;
     recreate?: boolean;
     alertMessage?: string;
+    onTabKey?: TabOptions;
 }
 
 export interface RichTextProps extends CommonRichTextProps {
@@ -34,6 +35,7 @@ export interface RichTextProps extends CommonRichTextProps {
 }
 
 export type EditorOption = "basic" | "extended" | "custom";
+export type TabOptions = "indent" | "changeFocus";
 export type Theme = "snow" | "bubble";
 
 export class RichText extends Component<RichTextProps> {
@@ -148,7 +150,33 @@ export class RichText extends Component<RichTextProps> {
     private setUpEditor(props: RichTextProps) {
         if (this.quillNode && !this.quill) {
             this.quill = new Quill(this.quillNode, {
-                modules: this.getEditorOptions(),
+                modules: {
+                    ...this.getEditorOptions(),
+                    keyboard: this.props.onTabKey === "changeFocus"
+                        ? {
+                            bindings: {
+                                indent: {
+                                    key: "Tab",
+                                    format: [ "blockquote", "indent", "list" ],
+                                    handler: (_range, context) => {
+                                        if (this.quill) {
+                                            if (context.collapsed && context.offset !== 0) {
+                                                return true;
+                                            }
+                                            if (context.format.indent != null) {
+                                                this.quill.format("indent", "-1", Quill.sources.USER);
+                                            } else {
+                                                this.quill.format("list", false, Quill.sources.USER);
+                                                this.quill.format("indent", "-1", Quill.sources.USER);
+                                            }
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        : {}
+                },
                 theme: props.theme,
                 clipboard: { matchVisual: false }
             } as any);
@@ -161,7 +189,7 @@ export class RichText extends Component<RichTextProps> {
                 // required to disable editor blur events when the toolbar is clicked
                 toolbar.addEventListener("mousedown", event => event.preventDefault());
             }
-            if (editor) {
+            if (editor && props.onTabKey === "indent") {
                 editor.addEventListener("keydown", event => event.stopPropagation());
             }
         }
