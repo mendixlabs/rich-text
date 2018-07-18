@@ -158,17 +158,10 @@ export class RichText extends Component<RichTextProps> {
                                 indent: {
                                     key: "Tab",
                                     format: [ "blockquote", "indent", "list" ],
-                                    handler: (_range, context) => {
+                                    handler: (range, _context) => {
                                         if (this.quill) {
-                                            if (context.collapsed && context.offset !== 0) {
-                                                return true;
-                                            }
-                                            if (context.format.indent != null) {
-                                                this.quill.format("indent", "-1", Quill.sources.USER);
-                                            } else {
-                                                this.quill.format("list", false, Quill.sources.USER);
-                                                this.quill.format("indent", "-1", Quill.sources.USER);
-                                            }
+                                            this.quill.formatText(range.index, range.length + 1, { blockquote: true, indent: -1, list: true });
+
                                             return false;
                                         }
                                     }
