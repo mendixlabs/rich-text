@@ -153,21 +153,7 @@ export class RichText extends Component<RichTextProps> {
                 modules: {
                     ...this.getEditorOptions(),
                     keyboard: this.props.onTabKey === "changeFocus"
-                        ? {
-                            bindings: {
-                                indent: {
-                                    key: "Tab",
-                                    format: [ "blockquote", "indent", "list" ],
-                                    handler: (range, _context) => {
-                                        if (this.quill) {
-                                            this.quill.formatText(range.index, range.length + 1, { blockquote: true, indent: -1, list: true });
-
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        ? this.createKeyboardModule()
                         : {}
                 },
                 theme: props.theme,
@@ -249,5 +235,32 @@ export class RichText extends Component<RichTextProps> {
         }
 
         return getToolbar(this.props.customOptions.length ? this.props.customOptions : [ { option: "spacer" } ]);
+    }
+
+    private createKeyboardModule() {
+        return {
+            bindings: {
+                indent: {
+                    key: 9,
+                    handler: (range, _context) => {
+                        this.formatText(range);
+                        return false;
+                    }
+                },
+                tab: {
+                    key: 9,
+                    handler: (range, _context) => {
+                        this.formatText(range);
+                        return false;
+                    }
+                }
+            }
+        };
+    }
+
+    private formatText(range: { index: number, length: number }) {
+        if (this.quill) {
+            this.quill.formatText(range.index, range.length + 1, { indent: -1 });
+        }
     }
 }
