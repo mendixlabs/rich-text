@@ -19,7 +19,7 @@ export interface RichTextContainerProps extends WrapperProps, CommonRichTextProp
     editable: "default" | "never";
     onChangeMicroflow: string;
     onChangeNanoflow: Nanoflow;
-    onTabKey: TabOptions;
+    tabAction: TabOptions;
 }
 
 interface Nanoflow {
@@ -61,7 +61,7 @@ export default class RichTextContainer extends Component<RichTextContainerProps,
         return createElement(ValidateConfigs, { ...this.props as RichTextContainerProps, showOnError: false },
             createElement(RichText, {
                 editorOption: this.props.editorOption,
-                onTabKey: this.props.onTabKey,
+                tabAction: this.props.tabAction,
                 theme: this.props.theme,
                 customOptions: this.props.customOptions,
                 minNumberOfLines: this.props.minNumberOfLines,

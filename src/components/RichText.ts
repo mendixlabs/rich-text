@@ -24,7 +24,7 @@ export interface CommonRichTextProps {
     maxNumberOfLines: number;
     recreate?: boolean;
     alertMessage?: string;
-    onTabKey?: TabOptions;
+    tabAction?: TabOptions;
 }
 
 export interface RichTextProps extends CommonRichTextProps {
@@ -152,7 +152,7 @@ export class RichText extends Component<RichTextProps> {
             this.quill = new Quill(this.quillNode, {
                 modules: {
                     ...this.getEditorOptions(),
-                    keyboard: this.props.onTabKey === "changeFocus"
+                    keyboard: this.props.tabAction === "changeFocus"
                         ? this.createKeyboardModule()
                         : {}
                 },
@@ -168,7 +168,7 @@ export class RichText extends Component<RichTextProps> {
                 // required to disable editor blur events when the toolbar is clicked
                 toolbar.addEventListener("mousedown", event => event.preventDefault());
             }
-            if (editor && props.onTabKey === "indent") {
+            if (editor && props.tabAction === "indent") {
                 editor.addEventListener("keydown", event => event.stopPropagation());
             }
         }
@@ -242,14 +242,14 @@ export class RichText extends Component<RichTextProps> {
             bindings: {
                 indent: {
                     key: 9,
-                    handler: (range, _context) => {
+                    handler: (range: { index: number, length: number }, _context: any) => {
                         this.formatText(range);
                         return false;
                     }
                 },
                 tab: {
                     key: 9,
-                    handler: (range, _context) => {
+                    handler: (range: { index: number, length: number }, _context: any) => {
                         this.formatText(range);
                         return false;
                     }

@@ -100,7 +100,7 @@ WARNING disabling this option is a security risk for XSS attacks</description>
                 </property>
             </properties>
         </property>
-        <property key="onTabKey" type="enumeration" defaultValue="indent">
+        <property key="tabAction" type="enumeration" defaultValue="indent">
             <caption>Tab key behavior</caption>
             <category>Events</category>
             <description>Press 'Tab' to indent text or to move focus to the next element</description>
