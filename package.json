@@ -1,7 +1,7 @@
 {
   "name": "rich-text",
   "widgetName": "RichText",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Rich inline or toolbar text editing",
   "scripts": {
     "start": "webpack-dev-server --hot --open",
@@ -45,16 +45,16 @@
     "@types/sanitize-html": "^1.13.31",
     "@types/webdriverio": "^4.8.7",
     "check-dependencies": "^1.1.0",
-    "copy-webpack-plugin": "^4.3.1",
+    "copy-webpack-plugin": "^4.6.0",
     "core-js": "^2.5.3",
-    "css-loader": "^0.28.8",
+    "css-loader": "^2.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
     "grunt": "^1.0.3",
     "grunt-check-dependencies": "^1.0.0",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.4.3",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
@@ -74,7 +74,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^2.0.9",
-    "mendix-client": "https://github.com/FlockOfBirds/Mendix-client-typing/archive/7.13.1.tar.gz",
+    "mendix-client": "^7.15.6",
     "mendix-widget-build-script": "^1.0.3",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",
@@ -105,6 +105,6 @@
     "classnames": "^2.2.5",
     "npm": "^6.2.0",
     "quill": "^1.3.6",
-    "sanitize-html": "^1.16.3"
+    "sanitize-html": "^1.20.0"
   }
 }
