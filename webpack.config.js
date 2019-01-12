@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 const pkg = require("./package");
@@ -60,10 +59,11 @@ const widgetConfig = {
                     }
                 }
             },
-            { test: /\.s?css$/, loader: ExtractTextPlugin.extract({
-                fallback: "style-loader",
-                use: "css-loader!sass-loader"
-            }) }
+            { test: /\.s?css$/, use: [
+                "style-loader",
+                "css-loader",
+                "sass-loader"
+             ] }
         ]
     },
     mode: "development",
@@ -79,7 +79,6 @@ const widgetConfig = {
             } ],
             { copyUnmodified: true }
         ),
-        new ExtractTextPlugin({ filename: `./widgets/com/mendix/widget/custom/${name}/ui/${widgetName}.css` }),
         new webpack.LoaderOptionsPlugin({
             debug: true
         })
